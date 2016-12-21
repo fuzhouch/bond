@@ -86,6 +86,17 @@ verifyExportsCodegen args baseName =
         , comm_h (export_attribute options)
         ]
 
+verifyExportsCodegen :: [String] -> FilePath -> TestTree
+verifyExportsCodegen args baseName =
+    testGroup baseName $
+        map (verifyFile options baseName cppTypeMapping "exports") templates
+  where
+    options = processOptions args
+    templates =
+        [ reflection_h (export_attribute options)
+        , comm_h (export_attribute options)
+        ]
+
 verifyCppCommCodegen :: [String] -> FilePath -> TestTree
 verifyCppCommCodegen args baseName =
     testGroup baseName $

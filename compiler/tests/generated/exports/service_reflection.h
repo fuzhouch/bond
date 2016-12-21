@@ -17,7 +17,7 @@ namespace tests
 
         DllExport
         static const ::bond::Metadata metadata;
-        
+
         private: DllExport
         static const ::bond::Metadata s_count_metadata;
 
@@ -38,8 +38,8 @@ namespace tests
         private: typedef boost::mpl::push_front<fields0, var::count>::type fields1;
 
         public: typedef fields1::type fields;
-        
-        
+
+
         static ::bond::Metadata GetMetadata()
         {
             return ::bond::reflection::MetadataInit("dummy", "tests.dummy",
@@ -47,7 +47,7 @@ namespace tests
             );
         }
     };
-    
 
-    
+
+
 } // namespace tests

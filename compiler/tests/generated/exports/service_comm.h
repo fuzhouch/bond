@@ -278,9 +278,9 @@ namespace tests
         private: typedef boost::mpl::push_front<methods17, service::foo11>::type methods18;
 
         public: typedef methods18::type methods;
-        
+
     };
-    
+
 
     class Foo::Proxy
         : public Foo
@@ -828,7 +828,7 @@ namespace tests
         {
             return foo23(::bond::comm::payload< ::tests::BasicTypes>(boost::cref(input)));
         }
-        
+
 
         using Foo::Proxy::foo24;
 
@@ -851,7 +851,7 @@ namespace tests
         {
             return foo24(::bond::comm::payload< ::tests::dummy>(boost::cref(input)));
         }
-        
+
 
         using Foo::Proxy::foo31;
 
@@ -918,7 +918,7 @@ namespace tests
         {
             return foo33(::bond::comm::payload< ::tests::BasicTypes>(boost::cref(input)));
         }
-        
+
 
         using Foo::Proxy::foo34;
 
@@ -941,7 +941,7 @@ namespace tests
         {
             return foo34(::bond::comm::payload< ::tests::dummy>(boost::cref(input)));
         }
-        
+
 
         using Foo::Proxy::foo41;
 
@@ -1008,7 +1008,7 @@ namespace tests
         {
             return foo43(::bond::comm::payload< ::tests::BasicTypes>(boost::cref(input)));
         }
-        
+
 
         using Foo::Proxy::foo44;
 
@@ -1031,8 +1031,8 @@ namespace tests
         {
             return foo44(::bond::comm::payload< ::tests::dummy>(boost::cref(input)));
         }
-        
+
     };
-    
+
 
 } // namespace tests
