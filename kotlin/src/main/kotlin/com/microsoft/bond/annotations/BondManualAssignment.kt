@@ -31,5 +31,7 @@ import kotlin.reflect.KClass
  *     @BondFieldId(x) @BondManaualAssignment var value : T? = null
  * 
  */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 annotation class BondManualAssignment
 

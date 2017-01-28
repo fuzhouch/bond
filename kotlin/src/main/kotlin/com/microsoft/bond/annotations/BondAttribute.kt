@@ -10,6 +10,5 @@ package com.microsoft.bond.annotations
  * @param attrName Vame of Bond attribute.
  * @param value Given string value of Bond attribute.
  */
-@Target(AnnotationTarget.VALUE_PARAMETER)
 annotation class BondAttribute(val attrName : String, val value : String)
 

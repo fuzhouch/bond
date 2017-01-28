@@ -7,4 +7,6 @@ package com.microsoft.bond.annotations
 /**
  * Annotation to tag ID of field defined in Bond IDL.
  */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 annotation class BondFieldId(val id : Int)

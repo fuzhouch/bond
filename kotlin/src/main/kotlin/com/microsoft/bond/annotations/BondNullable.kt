@@ -13,5 +13,7 @@ import kotlin.reflect.KClass
  * due to the limitation of both Kotlin and Java. The behavior
  * can be changed in the future.
  */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 annotation class BondNullable
 

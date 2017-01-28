@@ -7,4 +7,6 @@ package com.microsoft.bond.annotations
 /**
  * Annotation to tag a Bond generated class.
  */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.CLASS)
 annotation class BondSchema
