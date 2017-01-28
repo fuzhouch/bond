@@ -60,6 +60,11 @@ module Language.Bond.Codegen.Templates
     , KtFieldMapping(..)
     , KtStructMapping(..)
     , types_kt
+    , grpc_cs
+      -- ** Kotlin
+    , KtFieldMapping(..)
+    , KtStructMapping(..)
+    , types_kt
     )
     where
 
@@ -78,6 +83,7 @@ import Language.Bond.Codegen.Kt.Types_kt
 import Language.Bond.Codegen.Cs.Grpc_cs
 import Language.Bond.Codegen.Kt.Types_kt
 import Language.Bond.Codegen.Cs.Grpc_cs
+import Language.Bond.Codegen.Kt.Types_kt
 -- redundant imports for haddock
 import Language.Bond.Codegen.TypeMapping
 import Language.Bond.Syntax.Types

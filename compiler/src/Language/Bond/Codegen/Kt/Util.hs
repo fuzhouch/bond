@@ -131,4 +131,5 @@ defaultValue kt Field {fieldDefault = (Just def), ..} = explicitDefault def
         strLiteral BT_WString value = [lt|"#{value}"|]
         strLiteral _ _ = error "Kotlin:Str:defaultValue/floatLiteral: impossible happened."
     explicitDefault DefaultNothing = Just [lt|null|]
+    -- TODO Enum is still incorrect
     explicitDefault (DefaultEnum x) = Just [lt|#{getTypeName kt fieldType}.#{x}|]
