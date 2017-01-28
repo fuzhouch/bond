@@ -93,15 +93,22 @@ defaultValue kt Field {fieldDefault = Nothing, ..} = implicitDefault fieldType
     implicitDefault BT_Double = Just [lt|0.0|]
     implicitDefault BT_String = Just [lt|ByteString("")|]
     implicitDefault BT_WString = Just [lt|""|]
+<<<<<<< HEAD
     implicitDefault (BT_List _) = Just [lt|listOf()|]
     implicitDefault (BT_Set _) = Just [lt|setOf()|]
     implicitDefault (BT_Map _ _) = Just [lt|mapOf()|]
     implicitDefault (BT_Vector _) = Just [lt|arrayOf()|]
+=======
+>>>>>>> Support generating Kotlin type definition from IDL.
     implicitDefault t@(BT_UserDefined a@Alias {..} args)
         | customAliasMapping kt a = newInstance t
         | otherwise = implicitDefault $ resolveAlias a args
     implicitDefault t
+<<<<<<< HEAD
         | isStruct t = newInstance t
+=======
+        | isContainer t || isStruct t = newInstance t
+>>>>>>> Support generating Kotlin type definition from IDL.
     implicitDefault _ = Nothing
 
 defaultValue kt Field {fieldDefault = (Just def), ..} = explicitDefault def
@@ -130,4 +137,5 @@ defaultValue kt Field {fieldDefault = (Just def), ..} = explicitDefault def
         strLiteral BT_WString value = [lt|"#{value}"|]
         strLiteral _ _ = error "Kotlin:Str:defaultValue/floatLiteral: impossible happened."
     explicitDefault DefaultNothing = Just [lt|null|]
+    -- TODO Enum is still incorrect
     explicitDefault (DefaultEnum x) = Just [lt|#{getTypeName kt fieldType}.#{x}|]

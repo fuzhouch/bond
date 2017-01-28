@@ -60,6 +60,9 @@ data Options
         , output_dir :: FilePath
         , using :: [String]
         , namespace :: [String]
+        , collection_interfaces :: Bool
+        , readonly_properties :: Bool
+        , fields :: Bool
         , jobs :: Maybe Int
         , no_banner :: Bool
         }
