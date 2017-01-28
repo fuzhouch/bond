@@ -34,6 +34,7 @@ main = do
     case options of
         Cpp {..}    -> cppCodegen options
         Cs {..}     -> csCodegen options
+        Kotlin {..} -> ktCodegen options
         Schema {..} -> writeSchema options
         _           -> print options
 
@@ -103,6 +104,17 @@ csCodegen options@Cs {..} = do
     let templates = [ comm_interface_cs , comm_proxy_cs , comm_service_cs , types_cs Class fieldMapping ]
     concurrentlyFor_ files $ codeGen options typeMapping templates
 csCodegen _ = error "csCodegen: impossible happened."
+
+ktCodegen :: Options -> IO()
+ktCodegen options@Kotlin {..} = do
+    let fieldMapping = KtPublicFields
+    -- TODO: Add ktCollectionInterfaceTypeMapping in the future.
+    let typeMapping = ktTypeMapping
+    -- TODO Kotlin does not support Bond comm so far
+    let templates = [  types_kt KtClass fieldMapping ]
+    concurrentlyFor_ files $ codeGen options typeMapping templates
+ktCodegen _ = error "ktCodegen: impossible happened."
+
 
 codeGen :: Options -> TypeMapping -> [Template] -> FilePath -> IO ()
 codeGen options typeMapping templates file = do
