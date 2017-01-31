@@ -16,4 +16,5 @@
 /.vscode/
 
 # Gradle
-# .gradle
+.gradle
+/kotlin/build/
