@@ -139,8 +139,6 @@ import com.microsoft.bond.types.*
 
         initializerValue x = [lt|= #{x}|]
 
-    -- TODO
-    -- Kotlin enum definition for schema enum
     typeDefinition e@Enum {..} = [lt|#{KT.typeAttributes kt e}
 enum class #{declName}(val num : Int)
 {
