@@ -77,6 +77,7 @@ import Language.Bond.Codegen.Cs.Comm_cs
 import Language.Bond.Codegen.Kt.Types_kt
 import Language.Bond.Codegen.Cs.Grpc_cs
 import Language.Bond.Codegen.Kt.Types_kt
+import Language.Bond.Codegen.Cs.Grpc_cs
 -- redundant imports for haddock
 import Language.Bond.Codegen.TypeMapping
 import Language.Bond.Syntax.Types
