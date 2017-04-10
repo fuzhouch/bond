@@ -14,3 +14,9 @@
 
 # VS Code
 /.vscode/
+
+# Gradle
+.gradle
+/jvm/build/
+# Generated code of Bond IDL.
+/jvm/src/main/kotlin/bond/

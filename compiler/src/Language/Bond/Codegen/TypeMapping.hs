@@ -25,6 +25,7 @@ module Language.Bond.Codegen.TypeMapping
     , cppCustomAllocTypeMapping
     , csTypeMapping
     , csCollectionInterfacesTypeMapping
+    , ktTypeMapping
       -- * Alias mapping
       --
       -- | <https://microsoft.github.io/bond/manual/compiler.html#type-aliases Type aliases>
@@ -148,6 +149,29 @@ idlTypeMapping = TypeMapping
     idlTypeMapping
     idlTypeMapping
     idlTypeMapping
+
+-- | The default Kotlin type name mapping.
+ktTypeMapping :: TypeMapping
+ktTypeMapping = TypeMapping
+    (Just Kotlin)
+    ""
+    "."
+    ktType
+    id
+    ktTypeMapping
+    ktTypeMapping
+    ktAnnotatedTypeMapping
+
+ktAnnotatedTypeMapping :: TypeMapping
+ktAnnotatedTypeMapping = TypeMapping
+    (Just Kotlin)
+    ""
+    "."
+    (ktTypeAnnotation ktType)
+    id
+    ktAnnotatedTypeMapping
+    ktAnnotatedTypeMapping
+    ktAnnotatedTypeMapping
 
 -- | The default C++ type name mapping.
 cppTypeMapping :: TypeMapping
@@ -451,3 +475,45 @@ csTypeAnnotation m t@(BT_UserDefined a@Alias {..} args)
 csTypeAnnotation _ (BT_UserDefined decl args) = declTypeName decl <<>> (angles <$> commaSepTypeNames args)
 csTypeAnnotation m t = m t
 
+-- Kotlin type mapping
+ktType :: Type -> TypeNameBuilder
+ktType BT_Int8 = pure "Byte"
+ktType BT_Int16 = pure "Short"
+ktType BT_Int32 = pure "Int"
+ktType BT_Int64 = pure "Long"
+ktType BT_UInt8 = pure "UnsignedByte"
+ktType BT_UInt16 = pure "UnsignedShort"
+ktType BT_UInt32 = pure "UnsignedInt"
+ktType BT_UInt64 = pure "UnsignedLong"
+ktType BT_Float = pure "Float"
+ktType BT_Double = pure "Double"
+ktType BT_Bool = pure "Boolean"
+ktType BT_String = pure "ByteString"
+ktType BT_WString = pure "String"
+ktType BT_MetaName = pure "String"
+ktType BT_MetaFullName = pure "String"
+ktType BT_Blob = pure "Blob"
+ktType (BT_IntTypeArg x) = pureText x
+ktType (BT_List element) = "List<" <>> elementTypeName element <<> ">"
+ktType (BT_Vector element) = "Array<" <>> elementTypeName element <<> ">"
+ktType (BT_Set element) = "Set<" <>> elementTypeName element <<> ">"
+ktType (BT_Map key value) = "Map<" <>> elementTypeName key <<>> ", " <>> elementTypeName value <<> ">"
+ktType (BT_Bonded type_) = "Bonded<" <>> typeName type_ <<> ">"
+ktType (BT_UserDefined a@Alias {} args) = aliasTypeName a args
+ktType (BT_UserDefined decl args) = declTypeName decl <<>> (angles <$> localWith (const ktTypeMapping) (commaSepTypeNames args))
+ktType (BT_TypeParam param) = pureText $ paramName param
+ktType (BT_Maybe type_) = ktType (BT_Nullable type_)
+ktType (BT_Nullable element) = typeName element <<> "?"
+
+-- TODO
+-- Kotlin type mapping with collection interfaces will be added in the
+-- future.
+-- ktInterfaceType :: Type -> TypeNameBuilder
+
+-- Kotlin type annotation mapping
+ktTypeAnnotation :: (Type -> TypeNameBuilder) -> Type -> TypeNameBuilder
+ktTypeAnnotation _ (BT_Nullable _) = pure "@BondNullable"
+ktTypeAnnotation _ (BT_TypeParam _) = pure "@BondManualAssignment"
+ktTypeAnnotation _ (BT_Bonded _) = pure ""
+ktTypeAnnotation _ (BT_Maybe _) = pure ""
+ktTypeAnnotation m t = m t

@@ -54,6 +54,18 @@ data Options
         , comm_enabled :: Bool
         , grpc_enabled :: Bool
         }
+    | Kotlin
+        { files :: [FilePath]
+        , import_dir :: [FilePath]
+        , output_dir :: FilePath
+        , using :: [String]
+        , namespace :: [String]
+        , collection_interfaces :: Bool
+        , readonly_properties :: Bool
+        , fields :: Bool
+        , jobs :: Maybe Int
+        , no_banner :: Bool
+        }
     | Schema
         { files :: [FilePath]
         , import_dir :: [FilePath]
@@ -93,6 +105,14 @@ cs = Cs
     name "c#" &=
     help "Generate C# code"
 
+kt :: Options
+kt = Kotlin
+    {
+    } &=
+    name "kotlin" &=
+    help "Generate Kotlin code"
+
+
 schema :: Options
 schema = Schema
     { runtime_schema = def &= help "Generate Simple JSON representation of runtime schema, aka SchemaDef"
@@ -101,7 +121,7 @@ schema = Schema
     help "Output the JSON representation of the schema"
 
 mode :: Mode (CmdArgs Options)
-mode = cmdArgsMode $ modes [cpp, cs, schema] &=
+mode = cmdArgsMode $ modes [cpp, cs, kt, schema] &=
     program "gbc" &=
     help "Compile Bond schema file(s) and generate specified output. The schema file(s) can be in one of two formats: Bond IDL or JSON representation of the schema abstract syntax tree as produced by `gbc schema`. Multiple schema files can be specified either directly on the command line or by listing them in a text file passed to gbc via @listfile syntax." &=
     summary ("Bond Compiler " ++ showVersion version ++ ", (C) Microsoft")

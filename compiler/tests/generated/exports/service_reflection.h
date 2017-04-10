@@ -47,7 +47,5 @@ namespace tests
             );
         }
     };
-    
 
-    
 } // namespace tests

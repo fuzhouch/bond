@@ -52,6 +52,10 @@ module Language.Bond.Codegen.Templates
     , comm_proxy_cs
     , comm_service_cs
     , grpc_cs
+      -- ** Kotlin
+    , KtFieldMapping(..)
+    , KtStructMapping(..)
+    , types_kt
     )
     where
 
@@ -67,6 +71,7 @@ import Language.Bond.Codegen.Cpp.Comm_h
 import Language.Bond.Codegen.Cs.Types_cs
 import Language.Bond.Codegen.Cs.Comm_cs
 import Language.Bond.Codegen.Cs.Grpc_cs
+import Language.Bond.Codegen.Kt.Types_kt
 -- redundant imports for haddock
 import Language.Bond.Codegen.TypeMapping
 import Language.Bond.Syntax.Types
