@@ -17,4 +17,6 @@
 
 # Gradle
 .gradle
-/kotlin/build/
+/jvm/build/
+# Generated code of Bond IDL.
+/jvm/src/main/kotlin/bond/
