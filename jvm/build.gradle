@@ -6,6 +6,7 @@
 buildscript {
     ext.kotlin_version = '1.0.6'
     repositories {
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
@@ -27,3 +28,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+
+sourceSets {
+  main.kotlin.srcDirs += 'src/main/kotlin/bond'
+}
+
+task compileBondIdlToKotlin(type:Exec) {
+    workingDir "${projectDir}/src/main/kotlin/bond"
+    commandLine "${projectDir}/../build/compiler/build/gbc/gbc", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/../idl/bond/core/bond_const.bond","${projectDir}/../idl/bond/core/bond.bond", '-o', "${projectDir}/src/main/kotlin/bond"
+}
+
+compileKotlin.dependsOn compileBondIdlToKotlin

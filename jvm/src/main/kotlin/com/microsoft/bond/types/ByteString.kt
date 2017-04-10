@@ -19,4 +19,3 @@ class ByteString(val value : String = "",
         return value.toByteArray(encoding)
     }
 }
-
