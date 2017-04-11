@@ -34,8 +34,13 @@ sourceSets {
 }
 
 task compileBondIdlToKotlin(type:Exec) {
+    def gbcExePath = project.hasProperty("bondCompilerPath")? \
+                    bondCompilerPath : \
+                    "${projectDir}/../build/compiler/build/gbc/gbc"
+    println "BondCompilerPath=${gbcExePath}"
+
     workingDir "${projectDir}/src/main/kotlin/bond"
-    commandLine "${projectDir}/../build/compiler/build/gbc/gbc", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/../idl/bond/core/bond_const.bond","${projectDir}/../idl/bond/core/bond.bond", '-o', "${projectDir}/src/main/kotlin/bond"
+    commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/../idl/bond/core/bond_const.bond","${projectDir}/../idl/bond/core/bond.bond", '-o', "${projectDir}/src/main/kotlin/bond"
 }
 
 compileKotlin.dependsOn compileBondIdlToKotlin
