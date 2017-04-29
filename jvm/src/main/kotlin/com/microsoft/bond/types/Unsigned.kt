@@ -4,6 +4,8 @@
 
 package com.microsoft.bond.types
 
+import java.math.BigInteger
+
 // NOTE
 // As we know, JVM does not define unsigned types. We can't do
 //
@@ -11,6 +13,8 @@ package com.microsoft.bond.types
 // The implementation tries to address the problem by two steps:
 //   1. Apply a marker class to explicitly mark unsigned types.
 //   2. Assign a `value' field with larger room to contain given input.
+//
+// Another limitation
 
 /**
  * Represent an unsigned byte value.
@@ -56,9 +60,13 @@ class UnsignedInt(val value : Long = 0) {
  *
  * @param value Given byte value.
  */
-class UnsignedLong(val value : Double = 0.0) {
+class UnsignedLong(val value : BigInteger = BigInteger("0")) {
+    companion object {
+        val ZERO : BigInteger = BigInteger("0")
+        val MAX_UNSIGNED_LONG_VALUE : BigInteger = BigInteger("18446744073709551615")
+    }
     init {
-        if (value < 0 || value > 18446744073709551615.0 /* 0xFFFFFFFFFFFFFFFF */) {
+        if (value < ZERO || value > MAX_UNSIGNED_LONG_VALUE) {
             throw IllegalArgumentException("NegativeArgToUnsignedLong")
         }
     }
