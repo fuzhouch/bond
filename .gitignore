@@ -15,10 +15,11 @@
 # VS Code
 /.vscode/
 
-# Gradle
+# Gradle & IDEA IntelliJ
 .gradle
 .idea/
 /jvm/build/
 /jvm/bin/
+
 # Generated code of Bond IDL.
 /jvm/src/main/kotlin/bond/
