@@ -2,12 +2,12 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.protocols
+package com.microsoft.jbond.protocols
 
 import bond.ProtocolType
 import bond.Metadata
 import bond.BondDataType
-import com.microsoft.bond.types.*
+import com.microsoft.jbond.types.*
 import java.io.OutputStream
 
 class CompactBinaryWriter<T : OutputStream>(output: T, version : Int = 1) {

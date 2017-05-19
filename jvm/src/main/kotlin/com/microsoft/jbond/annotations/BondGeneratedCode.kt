@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.annotations
+package com.microsoft.jbond.annotations
 
 /**
  * Annotation to tag a class generated from a Bond IDL. 

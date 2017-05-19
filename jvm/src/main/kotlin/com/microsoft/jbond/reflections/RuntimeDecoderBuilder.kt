@@ -1,6 +1,6 @@
-package com.microsoft.bond.reflections
+package com.microsoft.jbond.reflections
 
-import com.microsoft.bond.annotations.BondSchema
+import com.microsoft.jbond.annotations.BondSchema
 import kotlin.reflect.KClass
 import java.io.Serializable
 import java.lang.Class

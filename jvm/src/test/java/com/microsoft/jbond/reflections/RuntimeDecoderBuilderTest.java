@@ -1,9 +1,8 @@
-package com.microsoft.bond.reflections;
+package com.microsoft.jbond.reflections;
 
 import bond.TypeDef;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class RuntimeDecoderBuilderTest {
     @Before

@@ -2,9 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.annotations
-
-import kotlin.reflect.KClass
+package com.microsoft.jbond.annotations
 
 /**
  * Annotation to tag a Nullable Bond class.

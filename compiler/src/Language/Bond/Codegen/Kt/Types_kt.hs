@@ -39,7 +39,7 @@ import qualified Language.Bond.Codegen.Kt.Util as KT
 -- 7. Bond's required_optional keyword is converted into
 --    BondRequiredOptional annotation.
 -- 
--- All annotations are defined in com.microsoft.bond.annotations
+-- All annotations are defined in com.microsoft.jbond.annotations
 -- package.
 --
 -- The definitions can be found from files below:
@@ -78,8 +78,8 @@ types_kt structMapping _ kt _ _ declarations = (fileSuffix, [lt|
 
 package #{ktPackage}
 
-import com.microsoft.bond.annotations.*
-import com.microsoft.bond.types.*
+import com.microsoft.jbond.annotations.*
+import com.microsoft.jbond.types.*
 
 #{doubleLineSep 1 typeDefinition declarations}
 

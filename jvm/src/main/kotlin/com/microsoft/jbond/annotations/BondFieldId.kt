@@ -2,11 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.annotations
+package com.microsoft.jbond.annotations
 
 /**
- * Annotation to tag a Bond generated class.
+ * Annotation to tag ID of field defined in Bond IDL.
  */
 @Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.CLASS)
-annotation class BondSchema
+@Target(AnnotationTarget.FIELD)
+annotation class BondFieldId(val id : Int)

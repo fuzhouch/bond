@@ -2,12 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.types
-
-// TODO Incomplete implementation
+package com.microsoft.jbond
 
 /**
- * Bonded class to enable delayed serialization.
+ * Deserialize objects of type
  */
-class Blob
-

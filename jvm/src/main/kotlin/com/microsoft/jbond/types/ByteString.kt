@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.bond.types
+package com.microsoft.jbond.types
 
 import kotlin.text.Charsets
 import java.nio.charset.Charset
