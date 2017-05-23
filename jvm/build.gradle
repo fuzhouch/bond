@@ -28,6 +28,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+test {
+    testLogging.showStandardStreams = project.hasProperty("testOutput")? true : false
+}
 
 sourceSets {
   main.kotlin.srcDirs += 'src/main/kotlin/bond'
