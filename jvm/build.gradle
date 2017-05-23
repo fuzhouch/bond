@@ -25,6 +25,8 @@ repositories {
 
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.6'
+    // In most cases, Java reflection is good enough.
+    // compile 'org.jetbrains.kotlin:kotlin-reflect:1.0.6'
     testCompile 'junit:junit:4.12'
 }
 

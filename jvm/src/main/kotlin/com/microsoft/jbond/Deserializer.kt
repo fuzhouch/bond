@@ -5,14 +5,26 @@
 package com.microsoft.jbond
 
 import com.microsoft.jbond.protocols.TaggedProtocolReader
-import java.lang.Class
+import com.microsoft.jbond.annotations.BondFieldId
+import java.util.TreeMap
 
 /**
  * Deserialize objects of type
  */
 class Deserializer<T>(klass: Class<T>) {
     val cls = klass
+    val fieldsMap = TreeMap<Int, String>()
+
+    private fun generateDeserializer(): Unit {
+        cls.declaredFields.forEach {
+            val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
+            // TODO
+            fieldsMap.put(fieldId, "TODO")
+        }
+    }
+
     fun deserialize(taggedReader: TaggedProtocolReader): T {
+        generateDeserializer()
         return cls.newInstance()
     }
 }
