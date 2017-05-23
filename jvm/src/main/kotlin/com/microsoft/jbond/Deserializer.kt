@@ -4,6 +4,15 @@
 
 package com.microsoft.jbond
 
+import com.microsoft.jbond.protocols.TaggedProtocolReader
+import java.lang.Class
+
 /**
  * Deserialize objects of type
  */
+class Deserializer<T>(klass: Class<T>) {
+    val cls = klass
+    fun deserialize(taggedReader: TaggedProtocolReader): T {
+        return cls.newInstance()
+    }
+}

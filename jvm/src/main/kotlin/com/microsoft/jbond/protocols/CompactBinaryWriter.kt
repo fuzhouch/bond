@@ -10,7 +10,7 @@ import bond.BondDataType
 import com.microsoft.jbond.types.*
 import java.io.OutputStream
 
-class CompactBinaryWriter<T : OutputStream>(output: T, version : Int = 1) {
+class CompactBinaryWriter(output: OutputStream, version : Int = 1) {
 
     val magic = ProtocolType.COMPACT_PROTOCOL
 
