@@ -49,3 +49,11 @@ task compileBondIdlToKotlin(type:Exec) {
 }
 
 compileKotlin.dependsOn compileBondIdlToKotlin
+
+compileTestJava {
+    options.compilerArgs += [ "-Xlint:unchecked" ]
+}
+
+compileTestJava {
+    options.compilerArgs += [ "-Xlint:unchecked" ]
+}

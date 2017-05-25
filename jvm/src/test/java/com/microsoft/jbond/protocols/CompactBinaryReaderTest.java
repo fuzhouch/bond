@@ -19,16 +19,12 @@ public class CompactBinaryReaderTest {
         byte[] data = DatatypeConverter.parseBase64Binary("TestData");
         ByteArrayInputStream inputBuffer = new ByteArrayInputStream(data);
         CompactBinaryReader reader = new CompactBinaryReader(inputBuffer);
-        Deserializer<AllPrimitiveTypes> deserializer = new Deserializer(AllPrimitiveTypes.class);
+        Deserializer deserializer = new Deserializer<AllPrimitiveTypes>(AllPrimitiveTypes.class);
         deserializer.deserialize(reader);
     }
 
     @Test(expected=UnsupportedBondTypeException.class)
     public void testThrowExceptionOnBadClass() throws UnsupportedBondTypeException {
-        Deserializer<InvalidBondGenerated> deserializer = new Deserializer(InvalidBondGenerated.class);
-        byte[] data = DatatypeConverter.parseBase64Binary("TestData");
-        ByteArrayInputStream inputBuffer = new ByteArrayInputStream(data);
-        CompactBinaryReader reader = new CompactBinaryReader(inputBuffer);
-        deserializer.deserialize(reader);
+        Deserializer deserializer = new Deserializer<InvalidBondGenerated>(InvalidBondGenerated.class);
     }
 }
