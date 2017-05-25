@@ -11,13 +11,31 @@ import com.microsoft.jbond.types.*
 import java.lang.reflect.Field
 import java.util.TreeMap
 
-internal data class FieldInfo<T>(val field: Field, val setter: (T, Field) -> Unit)
+internal data class FieldSetterInfo<T>(val field: Field, val setter: (T, Field) -> Unit) {
+    fun set(obj: T, value: Object) {
+        field.isAccessible = true
+        field.set(obj, value)
+    }
+}
 
-internal class TaggedProtocolDeserializer<T>(klass: Class<T>, reader: TaggedProtocolReader) {
+internal class TaggedClassDeserializer<T>(klass: Class<T>, reader: TaggedProtocolReader) {
     // TODO: Haven't supported inheritance yet.
     val cls = klass
     val protocolReader = reader
-    val fieldsMap = TreeMap<Int, FieldInfo<T>>()
+    val fieldsMap = TreeMap<Int, FieldSetterInfo<T>>()
+
+    init {
+        if (!isBondGenerated(cls)) {
+            throw UnsupportedBondTypeException(cls.name)
+        }
+
+        cls.declaredFields.forEach {
+            val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
+            val fieldType = it.type
+            fieldsMap.put(fieldId, FieldSetterInfo(it, createFieldSetter(fieldType)))
+        }
+        // TODO: Add support for cls.superclass.declaredFields later.
+    }
 
     private fun createFieldSetter(fieldType: Class<*>): (T, Field) -> Unit {
         return when(fieldType) {
@@ -36,13 +54,11 @@ internal class TaggedProtocolDeserializer<T>(klass: Class<T>, reader: TaggedProt
         }
     }
 
-    private fun createDeserializer() {
-        cls.declaredFields.forEach {
-            val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
-            val fieldType = it.type
-            fieldsMap.put(fieldId, FieldInfo(it, createFieldSetter(fieldType)))
-        }
-        // TODO: Process: cls.superclass.declaredFields
+    fun deserialize(obj: T) : T {
+        fieldsMap.forEach {
+            it.value.field.isAccessible = true
+            it.value.setter(obj, it.value.field) }
+        return obj
     }
 }
 
@@ -52,19 +68,13 @@ internal class TaggedProtocolDeserializer<T>(klass: Class<T>, reader: TaggedProt
 class Deserializer<T>(klass: Class<T>) {
     // TODO: Haven't supported inheritance yet.
     val cls = klass
-    val fieldsMap = TreeMap<Int, String>()
-
-    private fun generateDeserializer(taggedReader: TaggedProtocolReader): Unit {
-        if (!isBondGenerated(cls)) {
-            throw UnsupportedBondTypeException(cls.name)
-        }
-    }
 
     fun deserialize(taggedReader: TaggedProtocolReader): T {
-        generateDeserializer(taggedReader)
+        val deserializer = TaggedClassDeserializer<T>(cls, taggedReader)
+        val obj = cls.newInstance()
         // We always assume a buffer from a structure definition.
         // This is also the same behavior of C# version, see
         // TaggedParser.cs.
-        return cls.newInstance()
+        return deserializer.deserialize(obj)
     }
 }
