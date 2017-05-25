@@ -38,7 +38,7 @@ internal class TaggedClassDeserializer<T>(klass: Class<T>, reader: TaggedProtoco
     }
 
     private fun createFieldSetter(fieldType: Class<*>): (T, Field) -> Unit {
-        return when(fieldType) {
+        return when (fieldType) {
             Boolean::class.java -> { obj, field -> field.set(obj, protocolReader.readBool()) }
             Byte::class.java -> { obj, field -> field.set(obj, protocolReader.readInt8()) }
             Short::class.java -> { obj, field -> field.set(obj, protocolReader.readInt16()) }
@@ -54,10 +54,11 @@ internal class TaggedClassDeserializer<T>(klass: Class<T>, reader: TaggedProtoco
         }
     }
 
-    fun deserialize(obj: T) : T {
+    fun deserialize(obj: T): T {
         fieldsMap.forEach {
             it.value.field.isAccessible = true
-            it.value.setter(obj, it.value.field) }
+            it.value.setter(obj, it.value.field)
+        }
         return obj
     }
 }
@@ -71,10 +72,6 @@ class Deserializer<T>(klass: Class<T>) {
 
     fun deserialize(taggedReader: TaggedProtocolReader): T {
         val deserializer = TaggedClassDeserializer<T>(cls, taggedReader)
-        val obj = cls.newInstance()
-        // We always assume a buffer from a structure definition.
-        // This is also the same behavior of C# version, see
-        // TaggedParser.cs.
-        return deserializer.deserialize(obj)
+        return deserializer.deserialize(cls.newInstance())
     }
 }
