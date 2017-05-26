@@ -1,5 +1,7 @@
 package com.microsoft.jbond.utils;
 
+import com.microsoft.jbond.types.UnsignedByte;
+
 /**
  * Contains util functions for decoding/encoding ZigZag format.
  */
@@ -11,4 +13,13 @@ public class ZigZag {
     // for sint32s, or
     // (n << 1) ^ (n >> 63)
     // for the 64-bit version.
+
+    public static byte unsignedToSigned8(UnsignedByte uByte) {
+        short value = uByte.getValue();
+        return (byte)((value >> 1) ^ (~( value & 1 ) + 1));
+    }
+
+    public static UnsignedByte signedToUnsigned8(byte value) {
+        return new UnsignedByte((short)((value << 1) ^ (value >> 15)));
+    }
 }
