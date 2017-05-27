@@ -11,6 +11,7 @@ import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
 import com.microsoft.jbond.types.*
 import java.lang.reflect.Field
+import java.nio.charset.Charset
 
 /** A function to check if given class is a generated bond class.
  *  @return True if cls is Bond generated, and False if not.
@@ -19,7 +20,7 @@ fun Class<*>.isBondGenerated() : Boolean {
     return this.getAnnotation(BondGeneratedCode::class.java) != null
 }
 
-fun Field.createTaggedFieldReader(): (TaggedProtocolReader) -> Any {
+fun Field.createTaggedFieldReader(charset: Charset): (TaggedProtocolReader) -> Any {
     val fieldType = this.type
     return when (fieldType) {
         Boolean::class.java -> { reader -> reader.readBool() }
@@ -31,8 +32,8 @@ fun Field.createTaggedFieldReader(): (TaggedProtocolReader) -> Any {
         UnsignedShort::class.java -> { reader -> reader.readUInt16() }
         UnsignedInt::class.java -> { reader -> reader.readUInt32() }
         UnsignedLong::class.java -> { reader -> reader.readUInt64() }
-        ByteString::class.java -> { reader -> reader.readByteString() }
-        String::class.java -> { reader -> reader.readUnicodeString() }
+        ByteString::class.java -> { reader -> reader.readByteString(charset) }
+        String::class.java -> { reader -> reader.readUTF16String() }
         else -> throw UnsupportedBondTypeException(fieldType.toString())
     }
 }

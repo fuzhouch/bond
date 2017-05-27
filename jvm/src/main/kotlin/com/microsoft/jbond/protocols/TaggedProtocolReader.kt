@@ -5,9 +5,10 @@
 package com.microsoft.jbond.protocols
 
 import com.microsoft.jbond.types.*
+import java.nio.charset.Charset
 
 /**
- * Created by fuzhouch on 5/23/2017.
+ * Reader interface for tagged protocols.
  */
 interface TaggedProtocolReader {
     fun readBool() : Boolean
@@ -19,6 +20,6 @@ interface TaggedProtocolReader {
     fun readUInt16() : UnsignedShort
     fun readUInt32() : UnsignedInt
     fun readUInt64() : UnsignedLong
-    fun readByteString() : ByteString
-    fun readUnicodeString() : String
+    fun readByteString(charset: Charset) : ByteString
+    fun readUTF16String() : String
 }

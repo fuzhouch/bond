@@ -10,9 +10,10 @@ import com.microsoft.jbond.protocols.TaggedProtocolReader
 import com.microsoft.jbond.utils.TaggedStructField
 import com.microsoft.jbond.utils.createTaggedFieldReader
 import com.microsoft.jbond.utils.isBondGenerated
+import java.nio.charset.Charset
 import java.util.*
 
-internal class TaggedClassDeserializer<T>(klass: Class<T>) {
+internal class TaggedClassDeserializer<T>(klass: Class<T>, charset: Charset) {
     // TODO: Haven't supported inheritance yet.
     val cls = klass
     private val fieldsMap = TreeMap<Int, TaggedStructField<T>>()
@@ -25,7 +26,7 @@ internal class TaggedClassDeserializer<T>(klass: Class<T>) {
         cls.declaredFields.forEach {
             val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
             it.isAccessible = true
-            fieldsMap.put(fieldId, TaggedStructField(it, it.createTaggedFieldReader()))
+            fieldsMap.put(fieldId, TaggedStructField(it, it.createTaggedFieldReader(charset)))
         }
         // TODO: Add support for cls.superclass.declaredFields later.
     }

@@ -9,6 +9,8 @@ import com.microsoft.jbond.exceptions.*;
 import com.microsoft.jbond.mocks.AllPrimitiveTypes;
 import com.microsoft.jbond.mocks.InvalidBondGenerated;
 import java.io.ByteArrayInputStream;
+
+import org.junit.Assert;
 import org.junit.Test;
 import javax.xml.bind.DatatypeConverter;
 
@@ -20,7 +22,13 @@ public class CompactBinaryReaderTest {
         ByteArrayInputStream inputBuffer = new ByteArrayInputStream(data);
         CompactBinaryReader reader = new CompactBinaryReader(inputBuffer);
         Deserializer deserializer = new Deserializer<AllPrimitiveTypes>(AllPrimitiveTypes.class);
-        deserializer.deserialize(reader);
+        try {
+            deserializer.deserialize(reader);
+        } catch (Exception e) {
+            // We now have an invalid data. So supposed it should break.
+            return;
+        }
+        Assert.assertTrue(false);
     }
 
     @Test(expected=UnsupportedBondTypeException.class)

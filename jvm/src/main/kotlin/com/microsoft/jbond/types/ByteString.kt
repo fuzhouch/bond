@@ -13,9 +13,14 @@ import java.nio.charset.Charset
  * @param value Given string value.
  * @param encoding Parse encoding to convert string value to bytes.
  */
-class ByteString(val value : String = "",
-                 val encoding : Charset = Charsets.UTF_8) {
-    fun encodeToByteArrary() : ByteArray {
-        return value.toByteArray(encoding)
+class ByteString(val stringValue : String = "",
+                 val convertToCharset : Charset = Charsets.UTF_8) {
+    constructor(bytes: ByteArray, convertToCharset: Charset = Charsets.UTF_8) : this(String(bytes), convertToCharset)
+
+    val value = stringValue
+    val charset = convertToCharset
+
+    fun toByteArrary() : ByteArray {
+        return value.toByteArray(charset)
     }
 }
