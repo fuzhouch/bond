@@ -5,9 +5,14 @@
 package com.microsoft.jbond.utils;
 
 import com.microsoft.jbond.types.UnsignedByte;
+import com.microsoft.jbond.types.UnsignedInt;
+import com.microsoft.jbond.types.UnsignedLong;
+import com.microsoft.jbond.types.UnsignedShort;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.math.BigInteger;
 
 /**
  * Created by fuzhouch on 5/26/2017.
@@ -37,6 +42,39 @@ public class ZigZagTest {
             byte i8 = ZigZag.unsignedToSigned8(u8);
             Assert.assertEquals(i, u8.getValue());
             Assert.assertEquals(v, i8);
+        }
+    }
+
+    @Test
+    public void testConvertInt16() {
+        for (int i = 0; i < INT8_VALUES.length; ++i) {
+            short v = INT8_VALUES[i];
+            UnsignedShort u16 = ZigZag.signedToUnsigned16(v);
+            short i16 = ZigZag.unsignedToSigned16(u16);
+            Assert.assertEquals(i, u16.getValue());
+            Assert.assertEquals(v, i16);
+        }
+    }
+
+    @Test
+    public void testConvertInt32() {
+        for (int i = 0; i < INT8_VALUES.length; ++i) {
+            int v = INT8_VALUES[i];
+            UnsignedInt u32 = ZigZag.signedToUnsigned32(v);
+            int i32 = ZigZag.unsignedToSigned32(u32);
+            Assert.assertEquals(i, u32.getValue());
+            Assert.assertEquals(v, i32);
+        }
+    }
+
+    @Test
+    public void testConvertInt64() {
+        for (int i = 0; i < INT8_VALUES.length; ++i) {
+            long v = INT8_VALUES[i];
+            UnsignedLong u64 = ZigZag.signedToUnsigned64(v);
+            long i64 = ZigZag.unsignedToSigned64(u64);
+            Assert.assertTrue(BigInteger.valueOf(i).equals(u64.getValue()));
+            Assert.assertEquals(v, i64);
         }
     }
 }

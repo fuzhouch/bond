@@ -4,6 +4,10 @@
 
 package com.microsoft.jbond.utils;
 
+import com.microsoft.jbond.types.UnsignedInt;
+import com.microsoft.jbond.types.UnsignedLong;
+import com.microsoft.jbond.types.UnsignedShort;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -25,7 +29,13 @@ public class VariableLength {
         return (value & 0x80) == 0;
     }
 
-    public static int decodeVarUInt16(InputStream input) throws IOException {
+    /**
+     * Decode uint16 from input stream, returned as UnsignedShort.
+     * @param input Byte stream input.
+     * @return An UnsignedShort object as return value.
+     * @throws IOException
+     */
+    public static UnsignedShort decodeVarUInt16(InputStream input) throws IOException {
         int value = 0, shift = 0, readBytes = 0;
         byte oneByte;
         do {
@@ -34,10 +44,16 @@ public class VariableLength {
             shift += 7;
             readBytes += 1;
         } while (!isHighBitZero((oneByte)) && readBytes < MAX_VAR_UINT16_BYTES);
-        return value;
+        return new UnsignedShort(value);
     }
 
-    public static long decodeVarUInt32(InputStream input) throws IOException {
+    /**
+     * Decode uint32 from intput stream, returned as UnsignedInt
+     * @param input Byte stream input.
+     * @return An UnsignedInt object as returned value.
+     * @throws IOException
+     */
+    public static UnsignedInt decodeVarUInt32(InputStream input) throws IOException {
         long value = 0;
         int shift = 0, readBytes = 0;
         byte oneByte;
@@ -47,15 +63,29 @@ public class VariableLength {
             shift += 7;
             readBytes += 1;
         } while (!isHighBitZero((oneByte)) && readBytes < MAX_VAR_UINT32_BYTES);
-        return value;
+        return new UnsignedInt(value);
     }
 
-    public static BigInteger decodeVarUInt64(InputStream input) throws IOException {
+    /**
+     * Decode uint64 from intput stream, returned as UnsignedLong
+     * @param input Byte stream input.
+     * @return An UnsignedLong object as returned value.
+     * @throws IOException
+     */
+    public static UnsignedLong decodeVarUInt64(InputStream input) throws IOException {
         BitSet payload = new BitSet(MAX_VAR_UINT64_BYTES);
-        return new BigInteger(decodeVarUInt64AsBitSet(input, payload).toByteArray());
+        byte[] payloadAsBitSet = decodeVarUInt64(input, payload).toByteArray();
+        return new UnsignedLong(new BigInteger(payloadAsBitSet));
     }
 
-    public static BitSet decodeVarUInt64AsBitSet(InputStream input, BitSet payload) throws IOException {
+    /**
+     * Decode uint64 from input stream, returned as Bitset.
+     * @param input Byte stream input.
+     * @param payload A Bitset object as return value. Must call .clear() by caller.
+     * @return Reference of passed payload parameter.
+     * @throws IOException
+     */
+    public static BitSet decodeVarUInt64(InputStream input, BitSet payload) throws IOException {
         int shift = 0, readBytes = 0;
         byte oneByte;
         do {
