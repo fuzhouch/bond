@@ -34,7 +34,7 @@ class CompactBinaryReader(inputStream : InputStream) : TaggedProtocolReader {
         // IMPORTANT: Following C#/Windows convention, we assume
         // we read UTF16 bytes. However, it may not be portable
         // on non-Windows platforms.
-        val rawBytes = readRawStringBytes(1) ?: return ""
+        val rawBytes = readRawStringBytes(2) ?: return ""
         return String(rawBytes, Charsets.UTF_16LE)
     }
 
