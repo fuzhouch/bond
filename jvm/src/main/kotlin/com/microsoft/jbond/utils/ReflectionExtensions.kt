@@ -33,7 +33,7 @@ fun Field.createTaggedFieldReader(charset: Charset): (TaggedProtocolReader) -> A
         UnsignedInt::class.java -> { reader -> reader.readUInt32() }
         UnsignedLong::class.java -> { reader -> reader.readUInt64() }
         ByteString::class.java -> { reader -> reader.readByteString(charset) }
-        String::class.java -> { reader -> reader.readUTF16String() }
+        String::class.java -> { reader -> reader.readUTF16LEString() }
         else -> throw UnsupportedBondTypeException(fieldType.toString())
     }
 }

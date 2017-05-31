@@ -8,6 +8,7 @@ import com.microsoft.jbond.exceptions.EndOfStreamException
 import com.microsoft.jbond.types.*
 import com.microsoft.jbond.utils.VariableLength
 import com.microsoft.jbond.utils.ZigZag
+import com.microsoft.jbond.utils.CompactBinaryFieldInfo
 import java.io.InputStream
 import java.nio.charset.Charset
 
@@ -50,5 +51,10 @@ class CompactBinaryReader(inputStream : InputStream) : TaggedProtocolReader {
             throw EndOfStreamException(stringLength, readBytes)
         }
         return rawBytes
+    }
+
+    override fun getNextField(): CompactBinaryFieldInfo {
+        val fieldInfo = CompactBinaryFieldInfo(input)
+        return fieldInfo
     }
 }

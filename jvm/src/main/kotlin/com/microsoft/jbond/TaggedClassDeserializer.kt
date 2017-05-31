@@ -4,6 +4,7 @@
 
 package com.microsoft.jbond
 
+import bond.BondDataType
 import com.microsoft.jbond.annotations.BondFieldId
 import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
@@ -13,7 +14,7 @@ import com.microsoft.jbond.utils.isBondGenerated
 import java.nio.charset.Charset
 import java.util.*
 
-internal class TaggedClassDeserializer<T>(klass: Class<T>, charset: Charset) {
+class TaggedClassDeserializer<T>(klass: Class<T>, charset: Charset) {
     // TODO: Haven't supported inheritance yet.
     val cls = klass
     private val fieldsMap = TreeMap<Int, TaggedStructField<T>>()
@@ -32,7 +33,12 @@ internal class TaggedClassDeserializer<T>(klass: Class<T>, charset: Charset) {
     }
 
     fun deserialize(obj: T, reader: TaggedProtocolReader): T {
-        fieldsMap.forEach { it.value.setFieldValue(obj, reader) }
+        var eachField = reader.getNextField()
+        while (eachField.typeId != BondDataType.BT_STOP) {
+            // TODO: Add logic here.
+            eachField = reader.getNextField()
+        }
+        // fieldsMap.forEach { it.value.setFieldValue(obj, reader) }
         return obj
     }
 }

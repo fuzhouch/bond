@@ -5,6 +5,7 @@
 package com.microsoft.jbond.protocols
 
 import com.microsoft.jbond.types.*
+import com.microsoft.jbond.utils.FieldInfo
 import java.nio.charset.Charset
 
 /**
@@ -22,4 +23,5 @@ interface TaggedProtocolReader {
     fun readUInt64() : UnsignedLong
     fun readByteString(charset: Charset) : ByteString
     fun readUTF16LEString() : String
+    fun getNextField(): FieldInfo
 }
