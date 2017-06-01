@@ -514,6 +514,9 @@ ktType (BT_Nullable element) = typeName element <<> "?"
 ktTypeAnnotation :: (Type -> TypeNameBuilder) -> Type -> TypeNameBuilder
 ktTypeAnnotation _ (BT_Nullable _) = pure "@BondNullable"
 ktTypeAnnotation _ (BT_TypeParam _) = pure "@BondManualAssignment"
+ktTypeAnnotation _ (BT_Vector _) = pure ""
+ktTypeAnnotation _ (BT_List _) = pure ""
+ktTypeAnnotation _ (BT_Map _ _) = pure ""
 ktTypeAnnotation _ (BT_Bonded _) = pure ""
 ktTypeAnnotation _ (BT_Maybe _) = pure ""
 ktTypeAnnotation m t = m t
