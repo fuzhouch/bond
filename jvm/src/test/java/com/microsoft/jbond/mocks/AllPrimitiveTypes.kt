@@ -6,11 +6,11 @@ package com.microsoft.jbond.mocks
 
 import com.microsoft.jbond.annotations.BondFieldId
 import com.microsoft.jbond.annotations.BondGeneratedCode
-import com.microsoft.jbond.annotations.BondSchema
+import com.microsoft.jbond.annotations.BondStruct
 import com.microsoft.jbond.types.*
 
 // A mock class to test primitive types
-@BondSchema
+@BondStruct
 @BondGeneratedCode("gbc", "version.mock")
 open class AllPrimitiveTypes {
     @BondFieldId(0) var fieldByte : Byte = 0

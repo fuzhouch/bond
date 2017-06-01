@@ -42,9 +42,9 @@ propertyAttributes kt Field {..} =
 -- Kotlin class/struct/interface attributes
 typeAttributes :: MappingContext -> Declaration -> Text
 typeAttributes kt s@Struct {..} = optionalTypeAttributes kt s <> [lt|
-@BondSchema |] <> generatedCodeAttr
+@BondStruct |] <> generatedCodeAttr
 typeAttributes kt e@Enum {..} = optionalTypeAttributes kt e <> [lt|
-@BondSchema |] <> generatedCodeAttr
+@BondEnum |] <> generatedCodeAttr
 typeAttributes _ Service {..} = "Kotlin:typeAttributes: Service is not supported yet."
 typeAttributes _ _ = error "Kotlin:typeAttributes: impossible happened."
 

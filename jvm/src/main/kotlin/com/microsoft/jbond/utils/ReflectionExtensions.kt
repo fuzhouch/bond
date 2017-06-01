@@ -7,6 +7,7 @@
 package com.microsoft.jbond.utils
 
 import com.microsoft.jbond.annotations.BondGeneratedCode
+import com.microsoft.jbond.annotations.BondStruct
 import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
 import com.microsoft.jbond.types.*
@@ -17,7 +18,9 @@ import java.nio.charset.Charset
  *  @return True if cls is Bond generated, and False if not.
  */
 fun Class<*>.isBondGenerated() : Boolean {
-    return this.getAnnotation(BondGeneratedCode::class.java) != null
+    val isGenerated = this.getAnnotation(BondGeneratedCode::class.java) != null
+    val isStruct = this.getAnnotation(BondStruct::class.java) != null
+    return isGenerated && isStruct
 }
 
 fun Field.createTaggedFieldReader(charset: Charset): (TaggedProtocolReader) -> Any {

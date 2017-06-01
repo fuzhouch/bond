@@ -30,7 +30,7 @@ import qualified Language.Bond.Codegen.Kt.Util as KT
 --    see reference in its own syntax reference PDF doc).
 --
 -- Annotations are used in the following fields:
--- 1. All open classes are marked with BondSchema and BondGeneratedCode().
+-- 1. All open classes are marked with BondStruct/BondEnum and BondGeneratedCode().
 -- 2. All fields are marekd with BondFieldId().
 -- 3. Nullables type is marked with BondNullable(T::class)
 -- 4. string type is marked with BondByteString

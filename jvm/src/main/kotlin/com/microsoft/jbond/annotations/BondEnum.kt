@@ -5,8 +5,8 @@
 package com.microsoft.jbond.annotations
 
 /**
- * Annotation to tag a Bond generated class.
+ * Annotation to tag a Bond generated enum type.
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class BondSchema
+annotation class BondEnum
