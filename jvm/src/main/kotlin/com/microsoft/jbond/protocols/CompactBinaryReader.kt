@@ -5,6 +5,7 @@
 package com.microsoft.jbond.protocols
 
 import com.microsoft.jbond.exceptions.EndOfStreamException
+import com.microsoft.jbond.exceptions.UnsupportedVersionException
 import com.microsoft.jbond.types.*
 import com.microsoft.jbond.utils.VariableLength
 import com.microsoft.jbond.utils.ZigZag
@@ -13,10 +14,18 @@ import java.io.InputStream
 import java.nio.charset.Charset
 
 /**
- * Reader to process CompactBinary protocols (both v1 and v2)
+ * Reader to process CompactBinary protocols (v1 only)
  */
-class CompactBinaryReader(inputStream : InputStream) : TaggedProtocolReader {
+class CompactBinaryReader(inputStream : InputStream, version : Int) : TaggedProtocolReader {
     private val input = inputStream
+
+    constructor(inputStream : InputStream) : this(inputStream, 1)
+
+    init {
+        if (version != 1) {
+            throw UnsupportedVersionException("protocol=CompactBinary:version=$version")
+        }
+    }
 
     override fun readBool() : Boolean = input.read() == 0
     override fun readInt8() : Byte = input.read().toByte()
