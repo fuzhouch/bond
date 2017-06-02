@@ -4,9 +4,12 @@
 
 package com.microsoft.jbond
 
+import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
+import com.microsoft.jbond.types.isBondGenerated
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.util.*
 
 /**
  * Deserialize objects of given type.
@@ -15,8 +18,9 @@ class Deserializer<T>(klass: Class<T>, charset: Charset) {
     constructor(klass: Class<T>) : this(klass, StandardCharsets.UTF_8)
 
     val cls = klass
-    private val tagged = TaggedClassDeserializer<T>(cls, charset)
-    // TODO Support untagged deserizlizer later.
+    private val deserializerImpl = StructDeserializer(klass, charset, true)
 
-    fun deserialize(reader: TaggedProtocolReader): T = tagged.deserialize(cls.newInstance(), reader)
+    fun deserialize(reader: TaggedProtocolReader): T {
+        return cls.cast(deserializerImpl.deserialize(reader))
+    }
 }
