@@ -22,21 +22,3 @@ fun Class<*>.isBondGenerated() : Boolean {
     val isStruct = this.getAnnotation(BondStruct::class.java) != null
     return isGenerated && isStruct
 }
-
-fun Field.createTaggedFieldReader(charset: Charset): (TaggedProtocolReader) -> Any {
-    val fieldType = this.type
-    return when (fieldType) {
-        Boolean::class.java -> { reader -> reader.readBool() }
-        Byte::class.java -> { reader -> reader.readInt8() }
-        Short::class.java -> { reader -> reader.readInt16() }
-        Int::class.java -> { reader -> reader.readInt32() }
-        Long::class.java -> { reader -> reader.readInt64() }
-        UnsignedByte::class.java -> { reader -> reader.readUInt8() }
-        UnsignedShort::class.java -> { reader -> reader.readUInt16() }
-        UnsignedInt::class.java -> { reader -> reader.readUInt32() }
-        UnsignedLong::class.java -> { reader -> reader.readUInt64() }
-        ByteString::class.java -> { reader -> reader.readByteString(charset) }
-        String::class.java -> { reader -> reader.readUTF16LEString() }
-        else -> throw UnsupportedBondTypeException(fieldType.toString())
-    }
-}
