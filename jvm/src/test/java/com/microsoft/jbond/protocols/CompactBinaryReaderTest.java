@@ -30,7 +30,7 @@ public class CompactBinaryReaderTest {
         Deserializer deserializer = new Deserializer<InvalidBondGenerated>(InvalidBondGenerated.class);
     }
 
-    @Test(expected= UnsupportedVersionException.class)
+    @Test(expected=UnsupportedVersionException.class)
     public void testThrowExceptionOnBadProtocolVersion() throws UnsupportedVersionException {
         byte[] data = DatatypeConverter.parseBase64Binary("TestData");
         ByteArrayInputStream inputBuffer = new ByteArrayInputStream(data);

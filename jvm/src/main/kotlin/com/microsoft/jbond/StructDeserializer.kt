@@ -5,7 +5,7 @@ import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
 import com.microsoft.jbond.types.*
 import com.microsoft.jbond.utils.DeserializerInfo
-import com.microsoft.jbond.utils.isBondGenerated
+import com.microsoft.jbond.utils.isBondGeneratedStruct
 import java.lang.reflect.Field
 import java.nio.charset.Charset
 import java.util.*
@@ -42,7 +42,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
     }
 
     private fun buildFieldDeserializer(klass : Class<*>) : Unit {
-        if (!klass.isBondGenerated()) {
+        if (!klass.isBondGeneratedStruct()) {
             throw UnsupportedBondTypeException(klass.name)
         }
 
@@ -52,7 +52,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
             val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
             val fieldClass = it.type
             field.isAccessible = true
-            val fieldDeserializer = if (fieldClass.isBondGenerated()) {
+            val fieldDeserializer = if (fieldClass.isBondGeneratedStruct()) {
                 { reader, obj -> field.set(obj, StructDeserializer(fieldClass, charset, false).deserialize(reader)) }
             } else {
                 createFieldSetter(field, charset)
