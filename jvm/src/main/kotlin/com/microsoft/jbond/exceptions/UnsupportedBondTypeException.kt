@@ -4,4 +4,6 @@
 
 package com.microsoft.jbond.exceptions
 
-class UnsupportedBondTypeException(msg : String) : Exception(msg)
+class UnsupportedBondTypeException(klass : Class<*>) : Exception("type=${klass.name}") {
+    val cls = klass
+}

@@ -22,7 +22,13 @@ public class CompactBinaryReaderTest {
         ByteArrayInputStream inputBuffer = new ByteArrayInputStream(data);
         CompactBinaryReader reader = new CompactBinaryReader(inputBuffer);
         Deserializer deserializer = new Deserializer<AllPrimitiveTypes>(AllPrimitiveTypes.class);
-        deserializer.deserialize(reader);
+        try {
+            deserializer.deserialize(reader);
+        } catch (Exception e) {
+            Assert.assertTrue(true);
+            return;
+        }
+        Assert.assertTrue(false);
     }
 
     @Test(expected=UnsupportedBondTypeException.class)

@@ -1,5 +1,6 @@
 package com.microsoft.jbond
 
+import bond.BondDataType
 import com.microsoft.jbond.annotations.BondFieldId
 import com.microsoft.jbond.exceptions.UnsupportedBondTypeException
 import com.microsoft.jbond.protocols.TaggedProtocolReader
@@ -25,12 +26,28 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
 
     fun deserialize(reader: TaggedProtocolReader): Any {
         val deserializedObj = cls.newInstance()
-        // TODO
+        baseClassDeserializerChain.forEach {
+            val baseClass = it.klass
+            val baseDeserializer = it.deserializer
+            baseDeserializer.deserializeDeclaredFields(deserializedObj, reader, true)
+        }
+        deserializeDeclaredFields(deserializedObj, reader, false)
         return deserializedObj
     }
 
+    private fun deserializeDeclaredFields(obj : Any, reader: TaggedProtocolReader, isBase: Boolean) : Unit {
+        val casted = cls.cast(obj)
+        var fieldInfo = reader.parseNextField()
+        val stopSign = if (isBase) { BondDataType.BT_STOP_BASE } else { BondDataType.BT_STOP }
+
+        while (fieldInfo.typeId != stopSign) {
+            fieldDeserializerMap[fieldInfo.fieldId]?.invoke(reader, casted)
+            fieldInfo = reader.parseNextField()
+        }
+    }
+
     private fun buildDeserializerChain(klass : Class<*>, includeBase: Boolean) {
-        buildFieldDeserializer(klass)
+        buildDeclaredFieldDeserializer(klass)
         if (includeBase) {
             var parent = klass.superclass
             while (!parent.equals(java.lang.Object::class.java)) {
@@ -41,9 +58,9 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
         }
     }
 
-    private fun buildFieldDeserializer(klass : Class<*>) : Unit {
+    private fun buildDeclaredFieldDeserializer(klass : Class<*>) : Unit {
         if (!klass.isBondGeneratedStruct()) {
-            throw UnsupportedBondTypeException(klass.name)
+            throw UnsupportedBondTypeException(klass)
         }
 
         // For each field, create its deserializer
@@ -53,6 +70,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
             val fieldClass = it.type
             field.isAccessible = true
             val fieldDeserializer = if (fieldClass.isBondGeneratedStruct()) {
+                // TODO: Will it be a performance bottleneck?
                 { reader, obj -> field.set(obj, StructDeserializer(fieldClass, charset, false).deserialize(reader)) }
             } else {
                 createFieldSetter(field, charset)
@@ -61,7 +79,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
         }
     }
 
-    fun createFieldSetter(field: Field, charset: Charset): (TaggedProtocolReader, Any) -> Unit {
+    private fun createFieldSetter(field: Field, charset: Charset): (TaggedProtocolReader, Any) -> Unit {
         val fieldType = field.type
         return when (fieldType) {
             Boolean::class.java -> { reader, obj -> field.set(obj, reader.readBool()) }
@@ -76,7 +94,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
             ByteString::class.java -> { reader, obj -> field.set(obj, reader.readByteString(charset)) }
             String::class.java -> { reader, obj -> field.set(obj, reader.readUTF16LEString()) }
             // TODO: Container support comes later.
-            else -> throw UnsupportedBondTypeException(fieldType.toString())
+            else -> throw UnsupportedBondTypeException(fieldType)
         }
     }
 }

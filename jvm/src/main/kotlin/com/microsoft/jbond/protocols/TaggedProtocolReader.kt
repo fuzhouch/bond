@@ -23,5 +23,5 @@ interface TaggedProtocolReader {
     fun readUInt64() : UnsignedLong
     fun readByteString(charset: Charset) : ByteString
     fun readUTF16LEString() : String
-    fun getNextField(): FieldInfo
+    fun parseNextField(): FieldInfo
 }

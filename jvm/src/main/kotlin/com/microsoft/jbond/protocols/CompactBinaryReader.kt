@@ -62,7 +62,7 @@ class CompactBinaryReader(inputStream : InputStream, version : Int) : TaggedProt
         return rawBytes
     }
 
-    override fun getNextField(): CompactBinaryFieldInfo {
+    override fun parseNextField(): CompactBinaryFieldInfo {
         val fieldInfo = CompactBinaryFieldInfo(input)
         return fieldInfo
     }
