@@ -2,12 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package com.microsoft.jbond.protocols;
+package com.microsoft.jbond.utils;
 
 import com.microsoft.jbond.mocks.StructWithGenericField;
-import com.microsoft.jbond.utils.ReflectionExtensions;
 import java.lang.reflect.Field;
-
 import org.junit.Assert;
 import org.junit.Test;
 
