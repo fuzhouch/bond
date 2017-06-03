@@ -21,7 +21,7 @@ public class ReflectionUtilsTest {
             Field containerField = testObj.getClass().getDeclaredField("containerField");
             Assert.assertTrue(ReflectionExtensions.isGenericType(genericField));
             Assert.assertFalse(ReflectionExtensions.isGenericType(intField));
-            Assert.assertTrue(ReflectionExtensions.isGenericType(containerField));
+            Assert.assertFalse(ReflectionExtensions.isGenericType(containerField));
         } catch(NoSuchFieldException e) {
             Assert.assertFalse("TestFieldNotFound", true);
         }
