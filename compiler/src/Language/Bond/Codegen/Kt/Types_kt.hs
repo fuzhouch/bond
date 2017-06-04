@@ -78,8 +78,8 @@ types_kt structMapping _ kt _ _ declarations = (fileSuffix, [lt|
 
 package #{ktPackage}
 
-import com.microsoft.jbond.annotations.*
-import com.microsoft.jbond.types.*
+import qbranch.annotations.*
+import qbranch.types.*
 
 #{doubleLineSep 1 typeDefinition declarations}
 
