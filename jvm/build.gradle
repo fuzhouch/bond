@@ -48,7 +48,18 @@ task compileBondIdlToKotlin(type:Exec) {
     commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/../idl/bond/core/bond_const.bond","${projectDir}/../idl/bond/core/bond.bond", '-o', "${projectDir}/src/main/kotlin/bond"
 }
 
+task compileTestBondIdlToKotlin(type:Exec) {
+  def gbcExePath = project.hasProperty("bondCompilerPath")? \
+                  bondCompilerPath : \
+                  "${projectDir}/../build/compiler/build/gbc/gbc"
+  println "BondCompilerPath=${gbcExePath}"
+
+  workingDir "${projectDir}/src/test/kotlin/qbranch/ut"
+  commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/src/test/resources/testidl.bond", '-o', "${projectDir}/src/test/kotlin/qbranch/ut"
+}
+
 compileKotlin.dependsOn compileBondIdlToKotlin
+compileTestKotlin.dependsOn compileTestBondIdlToKotlin
 
 compileTestJava {
     options.compilerArgs += [ "-Xlint:unchecked" ]
