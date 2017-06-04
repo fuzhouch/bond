@@ -801,31 +801,31 @@ get_type_id<void>
     : std::integral_constant<BondDataType, BT_UNAVAILABLE> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<std::is_enum<T>>::type>
+get_type_id<T, typename boost::enable_if<std::is_enum<T> >::type>
     : get_type_id<int32_t> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_bond_type<T>>::type>
+get_type_id<T, typename boost::enable_if<is_bond_type<T> >::type>
     : std::integral_constant<BondDataType, BT_STRUCT> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_set_container<typename std::remove_const<T>::type>>::type>
+get_type_id<T, typename boost::enable_if<is_set_container<typename std::remove_const<T>::type> >::type>
     : std::integral_constant<BondDataType, BT_SET> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_map_container<typename std::remove_const<T>::type>>::type>
+get_type_id<T, typename boost::enable_if<is_map_container<typename std::remove_const<T>::type> >::type>
     : std::integral_constant<BondDataType, BT_MAP> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_list_container<typename std::remove_const<T>::type>>::type>
+get_type_id<T, typename boost::enable_if<is_list_container<typename std::remove_const<T>::type> >::type>
     : std::integral_constant<BondDataType, BT_LIST> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_string<typename std::remove_const<T>::type>>::type>
+get_type_id<T, typename boost::enable_if<is_string<typename std::remove_const<T>::type> >::type>
     : std::integral_constant<BondDataType, BT_STRING> {};
 
 template <typename T> struct
-get_type_id<T, typename boost::enable_if<is_wstring<typename std::remove_const<T>::type>>::type>
+get_type_id<T, typename boost::enable_if<is_wstring<typename std::remove_const<T>::type> >::type>
     : std::integral_constant<BondDataType, BT_WSTRING> {};
 
 template <typename T, typename Enable> struct
