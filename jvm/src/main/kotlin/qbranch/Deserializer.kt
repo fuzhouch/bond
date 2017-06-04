@@ -14,9 +14,10 @@ class Deserializer<T>(klass: Class<T>, charset: Charset) {
     constructor(klass: Class<T>) : this(klass, StandardCharsets.UTF_8)
 
     val cls = klass
-    private val deserializerImpl = StructDeserializer(klass, charset, true)
+    private val deserializerImpl = StructDeserializer(klass, charset)
 
     fun deserialize(reader: TaggedProtocolReader): T {
-        return cls.cast(deserializerImpl.deserialize(reader))
+        val obj = cls.newInstance()
+        return cls.cast(deserializerImpl.deserialize(obj as Any, reader, false))
     }
 }

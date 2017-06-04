@@ -6,6 +6,7 @@ package qbranch.protocols
 import qbranch.exceptions.EndOfStreamException
 import qbranch.exceptions.UnsupportedVersionException
 import qbranch.types.*
+import qbranch.utils.CompactBinaryFieldInfo
 import qbranch.utils.VariableLength
 import qbranch.utils.ZigZag
 import java.io.InputStream
@@ -46,6 +47,21 @@ class CompactBinaryReader(inputStream : InputStream, version : Int) : TaggedProt
         return String(rawBytes, Charsets.UTF_16LE)
     }
 
+    override fun readFloat(): Float {
+        // TODO
+        throw NotImplementedError("float")
+    }
+
+    override fun readDouble(): Double {
+        // TODO
+        throw NotImplementedError("double")
+    }
+
+    override fun skipField(): Unit {
+        // TODO
+        throw NotImplementedError("skipField")
+    }
+
     private fun readRawStringBytes(charLen : Int) : ByteArray? {
         val stringLength = readUInt32().value.toInt()
         if (stringLength == 0) {
@@ -60,8 +76,8 @@ class CompactBinaryReader(inputStream : InputStream, version : Int) : TaggedProt
         return rawBytes
     }
 
-    override fun parseNextField(): qbranch.utils.CompactBinaryFieldInfo {
-        val fieldInfo = qbranch.utils.CompactBinaryFieldInfo(input)
+    override fun parseNextField(): CompactBinaryFieldInfo {
+        val fieldInfo = CompactBinaryFieldInfo(input)
         return fieldInfo
     }
 }

@@ -7,8 +7,6 @@ import bond.BondDataType
 import qbranch.annotations.BondFieldId
 import qbranch.exceptions.UnsupportedBondTypeException
 import qbranch.protocols.TaggedProtocolReader
-import qbranch.types.*
-import qbranch.utils.DeserializerInfo
 import qbranch.utils.isBondGeneratedStruct
 import java.lang.reflect.Field
 import java.nio.charset.Charset
@@ -17,25 +15,25 @@ import java.util.*
 /**
  * Implementation that return deserialized struct as Object.
  */
-internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, includeBase : Boolean) {
-    val baseClassDeserializerChain = LinkedList<DeserializerInfo>()
-    val fieldDeserializerMap = TreeMap<Int, (TaggedProtocolReader, Any) -> Unit>()
+internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
+    var baseDeserializer : StructDeserializer? = null
+    val declaredFieldDeserializerMap = TreeMap<Int /* fieldId */, StructFieldSetter>()
     val cls = klass
     val charset = stringCharset
 
     init {
-        buildDeserializerChain(klass, includeBase)
+        var parent = klass.superclass
+        if (!parent.equals(java.lang.Object::class.java)) {
+            baseDeserializer = StructDeserializer(parent, charset)
+        }
+        buildDeclaredFieldDeserializer(klass)
     }
 
-    fun deserialize(reader: TaggedProtocolReader): Any {
-        val deserializedObj = cls.newInstance()
-        baseClassDeserializerChain.forEach {
-            val baseClass = it.klass
-            val baseDeserializer = it.deserializer
-            baseDeserializer.deserializeDeclaredFields(deserializedObj, reader, true)
-        }
-        deserializeDeclaredFields(deserializedObj, reader, false)
-        return deserializedObj
+    fun deserialize(preCreatedObj: Any, reader: TaggedProtocolReader, isBase: Boolean): Any {
+        val obj = cls.cast(preCreatedObj)
+        baseDeserializer?.deserialize(obj, reader, true)
+        deserializeDeclaredFields(obj, reader, isBase)
+        return obj
     }
 
     private fun deserializeDeclaredFields(obj : Any, reader: TaggedProtocolReader, isBase: Boolean) : Unit {
@@ -44,20 +42,20 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
         val stopSign = if (isBase) { BondDataType.BT_STOP_BASE } else { BondDataType.BT_STOP }
 
         while (fieldInfo.typeId != stopSign) {
-            fieldDeserializerMap[fieldInfo.fieldId]?.invoke(reader, casted)
-            fieldInfo = reader.parseNextField()
-        }
-    }
-
-    private fun buildDeserializerChain(klass : Class<*>, includeBase: Boolean) {
-        buildDeclaredFieldDeserializer(klass)
-        if (includeBase) {
-            var parent = klass.superclass
-            while (!parent.equals(java.lang.Object::class.java)) {
-                val baseDeserializer = StructDeserializer(parent, charset, false)
-                baseClassDeserializerChain.addFirst(DeserializerInfo(parent, baseDeserializer))
-                parent = parent.superclass
+            val fieldSetter = declaredFieldDeserializerMap[fieldInfo.fieldId]
+            if (fieldSetter != null) {
+                fieldSetter.set(casted, reader)
+            } else {
+                // A field appears in encoded binary but unknown
+                // to deserializer. There can be two cases:
+                //
+                // 1. The binary represents a struct with new version.
+                // 2. This is an invalid buffer.
+                //
+                // We surely won't be able to handle #1
+                reader.skipField()
             }
+            fieldInfo = reader.parseNextField()
         }
     }
 
@@ -70,34 +68,36 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset, inc
         klass.declaredFields.forEach {
             val field = it
             val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
-            val fieldClass = it.type
             field.isAccessible = true
-            val fieldDeserializer = if (fieldClass.isBondGeneratedStruct()) {
-                // TODO: Will it be a performance bottleneck?
-                { reader, obj -> field.set(obj, StructDeserializer(fieldClass, charset, false).deserialize(reader)) }
+            val bondTag = BondJavaTypeMapping.builtInTypeToBondTag[field.genericType]
+            if (bondTag != null) {
+                declaredFieldDeserializerMap[fieldId] = createFieldSetterByBondTag(bondTag, field)
             } else {
-                createFieldSetter(field, charset)
+                throw UnsupportedBondTypeException(field.type)
             }
-            fieldDeserializerMap[fieldId] = fieldDeserializer
         }
     }
 
-    private fun createFieldSetter(field: Field, charset: Charset): (TaggedProtocolReader, Any) -> Unit {
-        val fieldType = field.type
-        return when (fieldType) {
-            Boolean::class.java -> { reader, obj -> field.set(obj, reader.readBool()) }
-            Byte::class.java -> { reader, obj -> field.set(obj, reader.readInt8()) }
-            Short::class.java -> { reader, obj -> field.set(obj, reader.readInt16()) }
-            Int::class.java -> { reader, obj -> field.set(obj, reader.readInt32()) }
-            Long::class.java -> { reader, obj -> field.set(obj, reader.readInt64()) }
-            UnsignedByte::class.java -> { reader, obj -> field.set(obj, reader.readUInt8()) }
-            UnsignedShort::class.java -> { reader, obj -> field.set(obj, reader.readUInt16()) }
-            UnsignedInt::class.java -> { reader, obj -> field.set(obj, reader.readUInt32()) }
-            UnsignedLong::class.java -> { reader, obj -> field.set(obj, reader.readUInt64()) }
-            ByteString::class.java -> { reader, obj -> field.set(obj, reader.readByteString(charset)) }
-            String::class.java -> { reader, obj -> field.set(obj, reader.readUTF16LEString()) }
-            // TODO: Container support comes later.
-            else -> throw UnsupportedBondTypeException(fieldType)
+    private fun createFieldSetterByBondTag(bondTag: BondDataType, field: Field) : StructFieldSetter {
+        return when (bondTag) {
+            BondDataType.BT_BOOL -> BondTypeFieldSetter.Bool(field)
+            BondDataType.BT_UINT8 -> BondTypeFieldSetter.UInt8(field)
+            BondDataType.BT_UINT16 -> BondTypeFieldSetter.UInt16(field)
+            BondDataType.BT_UINT32 -> BondTypeFieldSetter.UInt32(field)
+            BondDataType.BT_UINT64 -> BondTypeFieldSetter.UInt64(field)
+            BondDataType.BT_FLOAT -> BondTypeFieldSetter.Float(field)
+            BondDataType.BT_DOUBLE -> BondTypeFieldSetter.Double(field)
+            BondDataType.BT_STRING -> BondTypeFieldSetter.ByteString(charset, field)
+            BondDataType.BT_INT8 -> BondTypeFieldSetter.UInt8(field)
+            BondDataType.BT_INT16 -> BondTypeFieldSetter.UInt16(field)
+            BondDataType.BT_INT32 -> BondTypeFieldSetter.UInt32(field)
+            BondDataType.BT_INT64 -> BondTypeFieldSetter.UInt64(field)
+            BondDataType.BT_WSTRING -> BondTypeFieldSetter.UTF16LEString(field)
+            // TODO: Container is more complicated than primitive types.
+            // BondDataType.BT_LIST
+            // BondDataType.BT_SET,
+            // BondDataType.BT_MAP,
+            else -> throw UnsupportedBondTypeException(field.type)
         }
     }
 }
