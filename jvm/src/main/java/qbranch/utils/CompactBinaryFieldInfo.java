@@ -24,10 +24,10 @@ public class CompactBinaryFieldInfo extends FieldInfo {
         int actualBytesRead;
         switch (flag) {
             case TWO_BYTE_FIELD_INFO_FLAG:
-                moreFieldBytes = new byte[2];
+                moreFieldBytes = new byte[1];
                 break;
             case FOUR_BYTE_FIELD_INFO_FLAG:
-                moreFieldBytes = new byte[4];
+                moreFieldBytes = new byte[3];
                 break;
             default:
                 m_fieldId = flag;

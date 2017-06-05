@@ -38,9 +38,9 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
 
     private fun deserializeDeclaredFields(obj : Any, reader: TaggedProtocolReader, isBase: Boolean) : Unit {
         val casted = cls.cast(obj)
-        var fieldInfo = reader.parseNextField()
         val stopSign = if (isBase) { BondDataType.BT_STOP_BASE } else { BondDataType.BT_STOP }
 
+        var fieldInfo = reader.parseNextField()
         while (fieldInfo.typeId != stopSign) {
             val fieldSetter = declaredFieldDeserializerMap[fieldInfo.fieldId]
             if (fieldSetter != null) {
@@ -88,10 +88,10 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
             BondDataType.BT_FLOAT -> BondTypeFieldSetter.Float(field)
             BondDataType.BT_DOUBLE -> BondTypeFieldSetter.Double(field)
             BondDataType.BT_STRING -> BondTypeFieldSetter.ByteString(charset, field)
-            BondDataType.BT_INT8 -> BondTypeFieldSetter.UInt8(field)
-            BondDataType.BT_INT16 -> BondTypeFieldSetter.UInt16(field)
-            BondDataType.BT_INT32 -> BondTypeFieldSetter.UInt32(field)
-            BondDataType.BT_INT64 -> BondTypeFieldSetter.UInt64(field)
+            BondDataType.BT_INT8 -> BondTypeFieldSetter.Int8(field)
+            BondDataType.BT_INT16 -> BondTypeFieldSetter.Int16(field)
+            BondDataType.BT_INT32 -> BondTypeFieldSetter.Int32(field)
+            BondDataType.BT_INT64 -> BondTypeFieldSetter.Int64(field)
             BondDataType.BT_WSTRING -> BondTypeFieldSetter.UTF16LEString(field)
             // TODO: Container is more complicated than primitive types.
             // BondDataType.BT_LIST
