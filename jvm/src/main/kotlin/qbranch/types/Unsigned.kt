@@ -6,8 +6,9 @@ package qbranch.types
 import java.math.BigInteger
 
 // NOTE
-// As we know, JVM does not define unsigned types. We can't do
-//
+// As we know, JVM does not define unsigned types. We can't simply
+// map them to signed integers with same length for obvious reason:
+// it can cause incorrect data representation.
 //
 // The implementation tries to address the problem by two steps:
 //   1. Apply a marker class to explicitly mark unsigned types.
