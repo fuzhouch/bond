@@ -3,9 +3,9 @@
 
 package qbranch.protocols
 
+import bond.BondDataType
 import qbranch.types.*
 import qbranch.utils.FieldInfo
-import java.nio.charset.Charset
 
 /**
  * Reader interface for tagged protocols.
@@ -20,10 +20,10 @@ interface TaggedProtocolReader {
     fun readUInt16() : UnsignedShort
     fun readUInt32() : UnsignedInt
     fun readUInt64() : UnsignedLong
-    fun readByteString(charset: Charset) : ByteString
+    fun readByteString() : ByteString
     fun readUTF16LEString() : String
     fun readFloat() : Float
     fun readDouble() : Double
     fun parseNextField(): FieldInfo
-    fun skipField(): Unit
+    fun skipField(dataType : BondDataType): Unit
 }

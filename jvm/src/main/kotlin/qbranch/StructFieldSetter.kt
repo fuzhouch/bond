@@ -50,9 +50,8 @@ sealed class BondTypeFieldSetter(structField: Field) : StructFieldSetter {
         override fun set(obj: Any, reader: TaggedProtocolReader) = field.set(obj, reader.readUInt64())
     }
 
-    class ByteString(inputCharset: Charset, field: Field) : BondTypeFieldSetter(field) {
-        val charset = inputCharset
-        override fun set(obj: Any, reader: TaggedProtocolReader) = field.set(obj, reader.readByteString(charset))
+    class ByteString(field: Field) : BondTypeFieldSetter(field) {
+        override fun set(obj: Any, reader: TaggedProtocolReader) = field.set(obj, reader.readByteString())
     }
 
     class UTF16LEString(field: Field) : BondTypeFieldSetter(field) {

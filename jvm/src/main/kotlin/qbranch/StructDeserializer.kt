@@ -15,20 +15,26 @@ import java.util.*
 /**
  * Implementation that return deserialized struct as Object.
  */
-internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
+internal class StructDeserializer(inputCls : Class<*>, stringCharset : Charset) {
     var baseDeserializer : StructDeserializer? = null
     val declaredFieldDeserializerMap = TreeMap<Int /* fieldId */, StructFieldSetter>()
-    val cls = klass
+    val cls = inputCls
     val charset = stringCharset
 
     init {
-        var parent = klass.superclass
-        if (!parent.equals(java.lang.Object::class.java)) {
+        val parent = inputCls.superclass
+        if (parent != java.lang.Object::class.java) {
             baseDeserializer = StructDeserializer(parent, charset)
         }
-        buildDeclaredFieldDeserializer(klass)
+        buildDeclaredFieldDeserializer(inputCls)
     }
 
+    /**
+     * Deserialize byte buffer to object.
+     * @param preCreatedObj Pre-created object that holds deserialized values.
+     * @param reader A tagged reader.
+     * @param isBase Check if this is a base class.
+     */
     fun deserialize(preCreatedObj: Any, reader: TaggedProtocolReader, isBase: Boolean): Any {
         val obj = cls.cast(preCreatedObj)
         baseDeserializer?.deserialize(obj, reader, true)
@@ -53,19 +59,19 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
                 // 2. This is an invalid buffer.
                 //
                 // We surely won't be able to handle #1
-                reader.skipField()
+                reader.skipField(fieldInfo.typeId)
             }
             fieldInfo = reader.parseNextField()
         }
     }
 
-    private fun buildDeclaredFieldDeserializer(klass : Class<*>) : Unit {
-        if (!klass.isBondGeneratedStruct()) {
-            throw UnsupportedBondTypeException(klass)
+    private fun buildDeclaredFieldDeserializer(inputCls : Class<*>) : Unit {
+        if (!inputCls.isBondGeneratedStruct()) {
+            throw UnsupportedBondTypeException(inputCls)
         }
 
         // For each field, create its deserializer
-        klass.declaredFields.forEach {
+        inputCls.declaredFields.forEach {
             val field = it
             val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
             field.isAccessible = true
@@ -87,7 +93,7 @@ internal class StructDeserializer(klass : Class<*>, stringCharset : Charset) {
             BondDataType.BT_UINT64 -> BondTypeFieldSetter.UInt64(field)
             BondDataType.BT_FLOAT -> BondTypeFieldSetter.Float(field)
             BondDataType.BT_DOUBLE -> BondTypeFieldSetter.Double(field)
-            BondDataType.BT_STRING -> BondTypeFieldSetter.ByteString(charset, field)
+            BondDataType.BT_STRING -> BondTypeFieldSetter.ByteString(field)
             BondDataType.BT_INT8 -> BondTypeFieldSetter.Int8(field)
             BondDataType.BT_INT16 -> BondTypeFieldSetter.Int16(field)
             BondDataType.BT_INT32 -> BondTypeFieldSetter.Int32(field)

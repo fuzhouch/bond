@@ -10,11 +10,11 @@ import java.nio.charset.StandardCharsets
 /**
  * Deserialize objects of given type.
  */
-class Deserializer<T>(klass: Class<T>, charset: Charset) {
-    constructor(klass: Class<T>) : this(klass, StandardCharsets.UTF_8)
+class Deserializer<T>(targetCls: Class<T>, charset: Charset) {
+    constructor(targetCls: Class<T>) : this(targetCls, StandardCharsets.UTF_8)
 
-    val cls = klass
-    private val deserializerImpl = StructDeserializer(klass, charset)
+    val cls = targetCls
+    private val deserializerImpl = StructDeserializer(targetCls, charset)
 
     fun deserialize(reader: TaggedProtocolReader): T {
         val obj = cls.newInstance()

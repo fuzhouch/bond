@@ -1,6 +1,6 @@
 namespace qbranch.ut
 
-struct IntStruct
+struct PrimitiveStruct
 {
     1: int8 int8value;
     3: int16 int16value;
@@ -10,4 +10,8 @@ struct IntStruct
     11: uint16 uint16value;
     13: uint32 uint32value;
     15: uint64 uint64value;
+    17: string stringvalue;
+    19: wstring wstringvalue;
+    21: float floatvalue;
+    23: double doublevalue;
 }
