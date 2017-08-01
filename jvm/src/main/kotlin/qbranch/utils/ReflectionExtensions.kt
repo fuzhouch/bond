@@ -26,7 +26,7 @@ fun Class<*>.isBondGeneratedStruct() : Boolean {
 fun Field.isGenericType() : Boolean {
     val declaredType = this.genericType
     val realType = this.type
-    return (declaredType !is ParameterizedType) && !declaredType.equals(realType)
+    return (declaredType !is ParameterizedType) && declaredType != (realType)
 }
 
 
@@ -48,6 +48,6 @@ inline fun <reified T: Any> extractGenericTypeArguments() : Array<Type> {
     if (type is ParameterizedType) {
         return type.actualTypeArguments
     } else {
-        throw UnsupportedOperationException("NonParameterizedType:type=${type}")
+        throw UnsupportedOperationException("NonParameterizedType:type=$type")
     }
 }
