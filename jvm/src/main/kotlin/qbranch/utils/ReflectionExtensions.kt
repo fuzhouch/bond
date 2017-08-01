@@ -6,18 +6,33 @@
 package qbranch.utils
 
 import qbranch.annotations.BondGeneratedCode
-import qbranch.annotations.BondStruct
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import kotlin.reflect.KClass
 
 /** A function to check if given class is a generated bond class.
- *  @return True if cls is Bond generated, and False if not.
+ *  @return True if cls is Bond generated, or false if not.
  */
 fun Class<*>.isBondGeneratedStruct() : Boolean {
-    val isGenerated = this.getAnnotation(BondGeneratedCode::class.java) != null
-    val isStruct = this.getAnnotation(BondStruct::class.java) != null
-    return isGenerated && isStruct
+    val isBondGenerated = this.getAnnotation(BondGeneratedCode::class.java) != null
+    return isBondGenerated && !this.isEnum
+}
+
+/**
+ * A function to check if given class is a generic type.
+ * @return True if class is generic type, or false if not.
+ */
+fun Class<*>.isGenericClass() : Boolean {
+    return this.typeParameters.size > 0
+}
+
+/**
+ * A function to check if given Kotlin class is a generic type.
+ * @return True if class is generic type, or false if not.
+ */
+fun KClass<*>.isGenericClass() : Boolean {
+    return this.java.isGenericClass()
 }
 
 /**

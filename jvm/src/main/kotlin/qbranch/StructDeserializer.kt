@@ -23,7 +23,7 @@ internal class StructDeserializer(inputCls : Class<*>, stringCharset : Charset) 
 
     init {
         val parent = inputCls.superclass
-        if (parent != java.lang.Object::class.java) {
+        if (parent != Any::class.java) {
             baseDeserializer = StructDeserializer(parent, charset)
         }
         buildDeclaredFieldDeserializer(inputCls)
