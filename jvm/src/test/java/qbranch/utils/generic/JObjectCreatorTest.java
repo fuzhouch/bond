@@ -42,6 +42,7 @@ public class JObjectCreatorTest {
         ObjectCreatorAsConcreteType<StructWithGenericField> creator =
                 ObjectCreator.build(StructWithGenericField.class,
                         ObjectCreator.toJCreatorsV(AllPrimitiveTypes.class));
+        @SuppressWarnings("unchecked")
         StructWithGenericField<AllPrimitiveTypes> genericObj = creator.newInstance();
 
         AllPrimitiveTypes obj = genericObj.getGenericField();
