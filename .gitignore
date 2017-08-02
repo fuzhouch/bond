@@ -14,13 +14,3 @@
 
 # VS Code
 /.vscode/
-
-# Gradle & IDEA IntelliJ
-.gradle
-.idea/
-/jvm/build/
-/jvm/bin/
-
-# Generated code of Bond IDL.
-/jvm/src/main/kotlin/bond/
-/jvm/src/test/kotlin/qbranch/ut

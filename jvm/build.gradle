@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-
 buildscript {
     ext.kotlin_version = '1.0.6'
     repositories {
@@ -14,57 +13,37 @@ buildscript {
     }
 }
 
-apply plugin: 'kotlin'
+subprojects {
+    apply plugin: 'kotlin'
+    // group = 'net.dummydigit.qbranch'
+    version = '0.1-SNAPSHOT'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 
-version = '5.0.0'
-sourceCompatibility = 1.7
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-    mavenCentral()
-}
+    dependencies {
+        compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.6'
+        // In most cases, Java reflection is good enough. Leave
+        // kotlin-reflect here just in case sometimes we may need it in
+        // the future.
+        // compile 'org.jetbrains.kotlin:kotlin-reflect:1.0.6'
+        testCompile 'junit:junit:4.12'
+    }
 
-dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.6'
-    // In most cases, Java reflection is good enough.
-    // compile 'org.jetbrains.kotlin:kotlin-reflect:1.0.6'
-    testCompile 'junit:junit:4.12'
-}
+    test {
+        testLogging.showStandardStreams = project.hasProperty("testOutput")? true : false
+    }
 
-test {
-    testLogging.showStandardStreams = project.hasProperty("testOutput")? true : false
-}
+    jar {
+        manifest {
+            attributes("Implementation-Title": "Gradle")
+        }
+    }
 
-sourceSets {
-  main.kotlin.srcDirs += 'src/main/kotlin/bond'
-}
-
-task compileBondIdlToKotlin(type:Exec) {
-    def gbcExePath = project.hasProperty("bondCompilerPath")? \
-                    bondCompilerPath : \
-                    "${projectDir}/../build/compiler/build/gbc/gbc"
-    println "BondCompilerPath=${gbcExePath}"
-
-    workingDir "${projectDir}/src/main/kotlin/bond"
-    commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/../idl/bond/core/bond_const.bond","${projectDir}/../idl/bond/core/bond.bond", '-o', "${projectDir}/src/main/kotlin/bond"
-}
-
-task compileTestBondIdlToKotlin(type:Exec) {
-  def gbcExePath = project.hasProperty("bondCompilerPath")? \
-                  bondCompilerPath : \
-                  "${projectDir}/../build/compiler/build/gbc/gbc"
-  println "BondCompilerPath=${gbcExePath}"
-
-  workingDir "${projectDir}/src/test/kotlin/qbranch/ut"
-  commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/src/test/resources/testidl.bond", '-o', "${projectDir}/src/test/kotlin/qbranch/ut"
-}
-
-compileKotlin.dependsOn compileBondIdlToKotlin
-compileTestKotlin.dependsOn compileTestBondIdlToKotlin
-
-compileTestJava {
-    options.compilerArgs += [ "-Xlint:unchecked" ]
-}
-
-compileTestJava {
-    options.compilerArgs += [ "-Xlint:unchecked" ]
+    compileTestJava {
+        options.compilerArgs += [ "-Xlint:unchecked" ]
+    }
 }

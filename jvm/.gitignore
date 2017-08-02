@@ -1,0 +1,9 @@
+# Gradle & IDEA IntelliJ
+.gradle
+.idea/
+build/
+bin/
+
+# Generated code of Bond IDL.
+bondschema/src/main/kotlin/bond/
+core/src/test/kotlin/qbranch/ut
