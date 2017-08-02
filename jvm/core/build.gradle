@@ -1,4 +1,4 @@
-archivesBaseName = 'core'
+archivesBaseName = 'qbranch-core'
 
 dependencies {
     compile project(":basetype")
@@ -9,10 +9,13 @@ task compileTestBondIdlToKotlin(type:Exec) {
   def gbcExePath = project.hasProperty("bondCompilerPath")? \
                   bondCompilerPath : \
                   "${projectDir}/../../build/compiler/build/gbc/gbc"
-  println "BondCompilerPath=${gbcExePath}"
+  println "core:BondCompilerPath=${gbcExePath}"
 
-  workingDir "${projectDir}/src/test/kotlin/qbranch/ut"
-  commandLine "${gbcExePath}", "kotlin", '-i', "${projectDir}/../idl/bond/core", "${projectDir}/src/test/resources/testidl.bond", '-o', "${projectDir}/src/test/kotlin/qbranch/ut"
+  workingDir "${projectDir}/src/test/kotlin/net/dummydigit/qbranch/ut"
+  commandLine "${gbcExePath}", "kotlin", \
+              '-i', "${projectDir}/../../idl/bond/core", \
+                    "${projectDir}/src/test/resources/testidl.bond", \
+              '-o', "${projectDir}/src/test/kotlin/net/dummydigit/qbranch/ut"
 }
 
 compileTestKotlin.dependsOn compileTestBondIdlToKotlin

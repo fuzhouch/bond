@@ -1,4 +1,4 @@
-namespace qbranch.ut
+namespace net.dummydigit.qbranch.ut
 
 struct PrimitiveStruct
 {

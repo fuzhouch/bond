@@ -1,4 +1,4 @@
-archivesBaseName = 'bondschema'
+archivesBaseName = 'qbranch-bondschema'
 
 dependencies {
     compile project(":basetype")

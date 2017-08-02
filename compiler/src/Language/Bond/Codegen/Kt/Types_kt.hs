@@ -78,8 +78,8 @@ types_kt structMapping _ kt _ _ declarations = (fileSuffix, [lt|
 
 package #{ktPackage}
 
-import qbranch.annotations.*
-import qbranch.types.*
+import net.dummydigit.qbranch.annotations.*
+import net.dummydigit.qbranch.types.*
 
 #{doubleLineSep 1 typeDefinition declarations}
 

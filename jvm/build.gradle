@@ -15,7 +15,7 @@ buildscript {
 
 subprojects {
     apply plugin: 'kotlin'
-    // group = 'net.dummydigit.qbranch'
+    group = 'net.dummydigit.qbranch'
     version = '0.1-SNAPSHOT'
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -40,6 +40,7 @@ subprojects {
     jar {
         manifest {
             attributes("Implementation-Title": "Gradle")
+            attributes("Implementation-Version": version)
         }
     }
 
