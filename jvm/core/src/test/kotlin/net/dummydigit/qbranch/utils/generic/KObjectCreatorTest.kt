@@ -5,15 +5,15 @@ package net.dummydigit.qbranch.utils.generic
 
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.ut.mocks.AllPrimitiveTypes
+import net.dummydigit.qbranch.ut.mocks.InvalidBondGenerated
 import net.dummydigit.qbranch.ut.mocks.StructWithGenericField
 import org.junit.Assert
 import org.junit.Test
-import java.util.*
 
 class KObjectCreatorTest {
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionOnNonBondGenerated() {
-        build(LinkedList::class)
+        build(InvalidBondGenerated::class)
     }
 
     @Test(expected = UnsupportedBondTypeException::class)

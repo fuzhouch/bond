@@ -1,8 +1,8 @@
 package net.dummydigit.qbranch.utils.generic;
 
-import java.util.LinkedList;
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException;
 import net.dummydigit.qbranch.ut.mocks.AllPrimitiveTypes;
+import net.dummydigit.qbranch.ut.mocks.InvalidBondGenerated;
 import net.dummydigit.qbranch.ut.mocks.StructWithGenericField;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import org.junit.Test;
 public class JObjectCreatorTest {
     @Test(expected=UnsupportedBondTypeException.class)
     public void testThrowExceptionOnNonBondGenerated() {
-        ObjectCreatorAsConcreteType<LinkedList> creator = ObjectCreator.build(LinkedList.class);
+        ObjectCreatorAsConcreteType<InvalidBondGenerated> creator =
+                ObjectCreator.build(InvalidBondGenerated.class);
     }
 
     @Test(expected=UnsupportedBondTypeException.class)
