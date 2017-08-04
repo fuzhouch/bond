@@ -9,6 +9,7 @@ import kotlin.reflect.KClass
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.utils.isGenericClass
 import net.dummydigit.qbranch.utils.isBondGeneratedStruct
+import java.util.*
 
 private class UnknownClassObjectCreator(objectClass : Class<*>) : ObjectCreatorAsAny {
     val cls = objectClass
@@ -108,15 +109,6 @@ fun<T: Any> build(objectClass : KClass<T>, typeParams: Array<ObjectCreatorAsAny>
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toJCreators(concreteTypeParameters : List<Class<*>>) : Array<ObjectCreatorAsAny> {
-    return concreteTypeParameters.map { UnknownClassObjectCreator(it) }.toTypedArray()
-}
-
-/**
- * A helper function to convert list of type parameters from Class<*> to ObjectCreator.
- * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
- * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
- */
 fun toJCreators(concreteTypeParameters : Array<Class<*>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it) }.toTypedArray()
 }
@@ -135,16 +127,25 @@ fun toJCreatorsV(vararg concreteTypeParameters : Class<*>) : Array<ObjectCreator
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toKCreators(concreteTypeParameters : List<KClass<*>>) : Array<ObjectCreatorAsAny> {
+fun<T: Any> toKCreators(concreteTypeParameters : List<KClass<T>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 
 /**
- * A helper function to convert list of type parameters from Class<*> to ObjectCreator.
+ * A helper function to convert array of type parameters from Class<*> to ObjectCreator.
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toKCreators(concreteTypeParameters : Array<KClass<*>>) : Array<ObjectCreatorAsAny> {
+fun<T: Any> toKCreators(concreteTypeParameters : Array<KClass<T>>) : Array<ObjectCreatorAsAny> {
+    return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
+}
+
+/**
+ * A helper function to convert array of type parameters from Class<*> to ObjectCreator.
+ * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
+ * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
+ */
+fun<T : Any> toKCreators(concreteTypeParameters : ArrayList<KClass<T>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 
@@ -155,4 +156,14 @@ fun toKCreators(concreteTypeParameters : Array<KClass<*>>) : Array<ObjectCreator
  */
 fun toKCreatorsV(vararg concreteTypeParameters : KClass<*>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
+}
+
+/**
+ * Helper function to perform unchecked cast between generic class with * and/or concrete type.
+ * @param obj Given object with type TFrom
+ * @return Same object with type TTo
+ */
+fun<TFrom : Any, TTo : Any> cast(obj : TFrom) : TTo {
+    @Suppress("UNCHECKED_CAST")
+    return obj as TTo
 }

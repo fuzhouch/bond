@@ -6,10 +6,11 @@ package net.dummydigit.qbranch.ut.mocks
 import net.dummydigit.qbranch.annotations.BondFieldId
 import net.dummydigit.qbranch.annotations.BondGeneratedCode
 import net.dummydigit.qbranch.utils.generic.ObjectCreatorAsAny
+import net.dummydigit.qbranch.utils.generic.cast
 
 @BondGeneratedCode("gbc", "version.mock")
 open class StructWithGenericField<T : Any>(typeArgs : Array<ObjectCreatorAsAny>) {
-    @BondFieldId(0) var genericField : T = typeArgs[0].newInstanceAsAny() as T
+    @BondFieldId(0) var genericField : T = cast(typeArgs[0].newInstanceAsAny())
     @BondFieldId(1) var intField : Int = 0
     @BondFieldId(2) var containerField : List<T> = listOf()
 }

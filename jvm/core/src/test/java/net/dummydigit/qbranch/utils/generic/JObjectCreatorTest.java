@@ -42,7 +42,7 @@ public class JObjectCreatorTest {
                 ObjectCreator.build(StructWithGenericField.class,
                         ObjectCreator.toJCreatorsV(AllPrimitiveTypes.class));
         @SuppressWarnings("unchecked")
-        StructWithGenericField<AllPrimitiveTypes> genericObj = creator.newInstance();
+        StructWithGenericField<AllPrimitiveTypes> genericObj = ObjectCreator.cast(creator.newInstance());
 
         AllPrimitiveTypes obj = genericObj.getGenericField();
         Assert.assertEquals(1, obj.getFieldByte());
