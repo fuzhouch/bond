@@ -1,15 +1,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package net.dummydigit.qbranch.utils
+package net.dummydigit.qbranch.utils.generic
 
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.ut.mocks.AllPrimitiveTypes
 import net.dummydigit.qbranch.ut.mocks.StructWithGenericField
-import net.dummydigit.qbranch.utils.generic.build
-import net.dummydigit.qbranch.utils.generic.cast
-import net.dummydigit.qbranch.utils.generic.toKCreators
-import net.dummydigit.qbranch.utils.generic.toKCreatorsV
 import org.junit.Assert
 import org.junit.Test
 import java.util.*
