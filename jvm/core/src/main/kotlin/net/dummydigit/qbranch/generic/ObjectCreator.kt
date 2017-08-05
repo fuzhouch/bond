@@ -3,13 +3,13 @@
 
 @file:JvmName("ObjectCreator")
 
-package net.dummydigit.qbranch.utils.generic
+package net.dummydigit.qbranch.generic
 
+import java.util.ArrayList
 import kotlin.reflect.KClass
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.utils.isGenericClass
 import net.dummydigit.qbranch.utils.isBondGeneratedStruct
-import java.util.*
 
 private class UnknownClassObjectCreator(objectClass : Class<*>) : ObjectCreatorAsAny {
     val cls = objectClass
@@ -53,7 +53,7 @@ private class GenericTypeObjectCreator<T>(objectClass : Class<T>, genericTypePar
  * @param objectClass Class object of given non-generic object.
  * @return An ObjectCreatorAsConcreteType<T> object to allow calling newInstance().
  */
-fun<T> build(objectClass : Class<T>) : ObjectCreatorAsConcreteType<T> {
+fun<T> mkCreator(objectClass : Class<T>) : ObjectCreatorAsConcreteType<T> {
     if (!objectClass.isBondGeneratedStruct()) {
         throw UnsupportedBondTypeException(objectClass)
     }
@@ -70,9 +70,9 @@ fun<T> build(objectClass : Class<T>) : ObjectCreatorAsConcreteType<T> {
  * @param objectClass Class object of given non-generic object.
  * @return An ObjectCreatorAsConcreteType<T> object to allow calling newInstance().
  */
-fun<T: Any> build(objectClass : KClass<T>) : ObjectCreatorAsConcreteType<T> {
+fun<T: Any> mkCreator(objectClass : KClass<T>) : ObjectCreatorAsConcreteType<T> {
     val jClass = objectClass.java
-    return build(jClass)
+    return mkCreator(jClass)
 }
 
 /**
@@ -81,7 +81,7 @@ fun<T: Any> build(objectClass : KClass<T>) : ObjectCreatorAsConcreteType<T> {
  * @param typeParams A list of type arguments.
  * @return An ObjectCreatorAsConcreteType<T> object to allow newInstance() on generic Bond structure.
  */
-fun<T> build(genericClass : Class<T>, typeParams: Array<ObjectCreatorAsAny>) : ObjectCreatorAsConcreteType<T> {
+fun<T> mkCreator(genericClass : Class<T>, typeParams: Array<ObjectCreatorAsAny>) : ObjectCreatorAsConcreteType<T> {
     if (!genericClass.isBondGeneratedStruct()) {
         throw UnsupportedBondTypeException(genericClass)
     }
@@ -99,9 +99,9 @@ fun<T> build(genericClass : Class<T>, typeParams: Array<ObjectCreatorAsAny>) : O
  * @param typeParams A list of type arguments.
  * @return An ObjectCreatorAsConcreteType<T> object to allow calling newInstance().
  */
-fun<T: Any> build(objectClass : KClass<T>, typeParams: Array<ObjectCreatorAsAny>) : ObjectCreatorAsConcreteType<T> {
+fun<T: Any> mkCreator(objectClass : KClass<T>, typeParams: Array<ObjectCreatorAsAny>) : ObjectCreatorAsConcreteType<T> {
     val jClass = objectClass.java
-    return build(jClass, typeParams)
+    return mkCreator(jClass, typeParams)
 }
 
 /**
@@ -109,7 +109,7 @@ fun<T: Any> build(objectClass : KClass<T>, typeParams: Array<ObjectCreatorAsAny>
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toJCreators(concreteTypeParameters : Array<Class<*>>) : Array<ObjectCreatorAsAny> {
+fun toJTypeArgs(concreteTypeParameters : Array<Class<*>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it) }.toTypedArray()
 }
 
@@ -118,7 +118,7 @@ fun toJCreators(concreteTypeParameters : Array<Class<*>>) : Array<ObjectCreatorA
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toJCreatorsV(vararg concreteTypeParameters : Class<*>) : Array<ObjectCreatorAsAny> {
+fun toJTypeArgsV(vararg concreteTypeParameters : Class<*>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it) }.toTypedArray()
 }
 
@@ -127,7 +127,7 @@ fun toJCreatorsV(vararg concreteTypeParameters : Class<*>) : Array<ObjectCreator
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun<T: Any> toKCreators(concreteTypeParameters : List<KClass<T>>) : Array<ObjectCreatorAsAny> {
+fun<T: Any> toKTypeArgs(concreteTypeParameters : List<KClass<T>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 
@@ -136,7 +136,7 @@ fun<T: Any> toKCreators(concreteTypeParameters : List<KClass<T>>) : Array<Object
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun<T: Any> toKCreators(concreteTypeParameters : Array<KClass<T>>) : Array<ObjectCreatorAsAny> {
+fun<T: Any> toKTypeArgs(concreteTypeParameters : Array<KClass<T>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 
@@ -145,7 +145,7 @@ fun<T: Any> toKCreators(concreteTypeParameters : Array<KClass<T>>) : Array<Objec
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun<T : Any> toKCreators(concreteTypeParameters : ArrayList<KClass<T>>) : Array<ObjectCreatorAsAny> {
+fun<T : Any> toKTypeArgs(concreteTypeParameters : ArrayList<KClass<T>>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 
@@ -154,7 +154,7 @@ fun<T : Any> toKCreators(concreteTypeParameters : ArrayList<KClass<T>>) : Array<
  * @param concreteTypeParameters Generic type arguments as a list of Class<*>.
  * @return Generic type arguments as a list of ObjectCreatorAsAny objects.
  */
-fun toKCreatorsV(vararg concreteTypeParameters : KClass<*>) : Array<ObjectCreatorAsAny> {
+fun toKTypeArgsV(vararg concreteTypeParameters : KClass<*>) : Array<ObjectCreatorAsAny> {
     return concreteTypeParameters.map { UnknownClassObjectCreator(it.java) }.toTypedArray()
 }
 

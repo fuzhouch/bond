@@ -5,8 +5,8 @@ package net.dummydigit.qbranch.ut.mocks
 
 import net.dummydigit.qbranch.annotations.BondFieldId
 import net.dummydigit.qbranch.annotations.BondGeneratedCode
-import net.dummydigit.qbranch.utils.generic.ObjectCreatorAsAny
-import net.dummydigit.qbranch.utils.generic.cast
+import net.dummydigit.qbranch.generic.ObjectCreatorAsAny
+import net.dummydigit.qbranch.generic.cast
 
 @BondGeneratedCode("gbc", "version.mock")
 open class StructWithGenericField<T : Any>(typeArgs : Array<ObjectCreatorAsAny>) {

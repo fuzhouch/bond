@@ -1,7 +1,7 @@
 # Gradle & IDEA IntelliJ
 .gradle
 .idea/
-build/
+mkCreator/
 bin/
 
 # Generated code of Bond IDL.

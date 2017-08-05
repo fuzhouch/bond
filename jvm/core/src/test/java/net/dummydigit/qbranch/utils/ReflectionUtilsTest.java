@@ -5,14 +5,14 @@ package net.dummydigit.qbranch.utils;
 
 import java.lang.reflect.Field;
 import net.dummydigit.qbranch.ut.mocks.StructWithGenericField;
-import net.dummydigit.qbranch.utils.generic.ObjectCreator;
+import net.dummydigit.qbranch.generic.ObjectCreator;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ReflectionUtilsTest {
     @Test
     public void testFieldGeneric() {
-        StructWithGenericField<String> testObj = new StructWithGenericField<>(ObjectCreator.toJCreatorsV(String.class));
+        StructWithGenericField<String> testObj = new StructWithGenericField<>(ObjectCreator.toJTypeArgsV(String.class));
         try {
             Field genericField = testObj.getClass().getDeclaredField("genericField");
             Field intField = testObj.getClass().getDeclaredField("intField");

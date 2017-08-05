@@ -1,7 +1,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root
 // for full license information.
 
-package net.dummydigit.qbranch.utils.generic
+package net.dummydigit.qbranch.generic
 
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.ut.mocks.AllPrimitiveTypes
@@ -13,32 +13,32 @@ import org.junit.Test
 class KObjectCreatorTest {
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionOnNonBondGenerated() {
-        build(InvalidBondGenerated::class)
+        mkCreator(InvalidBondGenerated::class)
     }
 
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionWhenPassingGenericClassToNonGenericBuilder() {
-        build(StructWithGenericField::class)
+        mkCreator(StructWithGenericField::class)
     }
 
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionWhenPassingNonGenericClassToGenericBuilder() {
-        build(AllPrimitiveTypes::class, toKCreators(listOf(KObjectCreatorTest::class)))
+        mkCreator(AllPrimitiveTypes::class, toKTypeArgs(listOf(KObjectCreatorTest::class)))
     }
 
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionWhenPassingNonGenericClassToGenericBuilderArrayList() {
-        build(AllPrimitiveTypes::class, toKCreators(arrayListOf(KObjectCreatorTest::class)))
+        mkCreator(AllPrimitiveTypes::class, toKTypeArgs(arrayListOf(KObjectCreatorTest::class)))
     }
 
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionWhenPassingNonGenericClassToGenericBuilderArray() {
-        build(AllPrimitiveTypes::class, toKCreators(arrayOf(KObjectCreatorTest::class)))
+        mkCreator(AllPrimitiveTypes::class, toKTypeArgs(arrayOf(KObjectCreatorTest::class)))
     }
 
     @Test
     fun testCreateConcreteTypeCreators() {
-        val creator = build(AllPrimitiveTypes::class.java)
+        val creator = mkCreator(AllPrimitiveTypes::class.java)
         val obj = creator.newInstance()
         Assert.assertEquals(1, obj.fieldByte.toLong())
         Assert.assertEquals(2, obj.fieldShort.toLong())
@@ -48,7 +48,7 @@ class KObjectCreatorTest {
 
     @Test
     fun testCreateGenericTypeCreators() {
-        val creator = build(StructWithGenericField::class, toKCreatorsV(AllPrimitiveTypes::class))
+        val creator = mkCreator(StructWithGenericField::class, toKTypeArgsV(AllPrimitiveTypes::class))
         val genericObj : StructWithGenericField<AllPrimitiveTypes> = cast(creator.newInstance())
 
         val obj = genericObj.genericField
