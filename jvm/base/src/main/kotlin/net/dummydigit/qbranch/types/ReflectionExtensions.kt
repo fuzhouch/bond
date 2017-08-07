@@ -5,7 +5,7 @@
 
 package net.dummydigit.qbranch.types
 
-import net.dummydigit.qbranch.annotations.BondGeneratedCode
+import net.dummydigit.qbranch.annotations.QBranchGeneratedCode
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  *  @return True if cls is Bond generated, or false if not.
  */
 fun Class<*>.isBondGeneratedStruct() : Boolean {
-    val isBondGenerated = this.getAnnotation(BondGeneratedCode::class.java) != null
+    val isBondGenerated = this.getAnnotation(QBranchGeneratedCode::class.java) != null
     return isBondGenerated && !this.isEnum
 }
 

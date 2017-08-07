@@ -8,5 +8,5 @@ package net.dummydigit.qbranch.annotations
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
-annotation class BondRequired
+annotation class Required
 

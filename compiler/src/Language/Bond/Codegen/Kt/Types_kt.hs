@@ -30,11 +30,11 @@ import qualified Language.Bond.Codegen.Kt.Util as KT
 --    see reference in its own syntax reference PDF doc).
 --
 -- Annotations are used in the following fields:
--- 1. All open classes are marked with BondStruct/BondEnum and BondGeneratedCode().
--- 2. All fields are marekd with BondFieldId().
--- 3. Nullables type is marked with BondNullable(T::class)
--- 4. string type is marked with BondByteString
--- 5. Customized attributes are converted into: BondAttribute(attrName, value)
+-- 1. All open classes are marked with QBranchGeneratedCode().
+-- 2. All fields are marekd with FieldId().
+-- 3. Nullables type is marked with Nullable(T::class)
+-- 4. string type is marked with ByteString
+-- 5. Customized attributes are converted into: Attribute(attrName, value)
 -- 6. Bond's required keyword is converted into BondRequired annotation.
 -- 7. Bond's required_optional keyword is converted into
 --    BondRequiredOptional annotation.

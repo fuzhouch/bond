@@ -3,27 +3,27 @@
 
 package net.dummydigit.qbranch.ut.mocks
 
-import net.dummydigit.qbranch.annotations.BondFieldId
-import net.dummydigit.qbranch.annotations.BondGeneratedCode
+import net.dummydigit.qbranch.annotations.FieldId
+import net.dummydigit.qbranch.annotations.QBranchGeneratedCode
 import net.dummydigit.qbranch.generic.*
 
 // This file demonstrates the case that how a generic class is referenced
 // when creating instances.
 
-@BondGeneratedCode("gbc", "version.mock")
+@QBranchGeneratedCode("gbc", "version.mock")
 open class C1<T1 : Any, T2 : Any>(typeArgs : Array<ObjectCreatorAsAny>) {
-    @BondFieldId(0) var valueT1 : T1 = cast(typeArgs[0].newInstanceAsAny())
-    @BondFieldId(1) var valueT2 : T2 = cast(typeArgs[1].newInstanceAsAny())
+    @FieldId(0) var valueT1 : T1 = cast(typeArgs[0].newInstanceAsAny())
+    @FieldId(1) var valueT2 : T2 = cast(typeArgs[1].newInstanceAsAny())
 }
 
-@BondGeneratedCode("gbc", "version.mock")
+@QBranchGeneratedCode("gbc", "version.mock")
 open class C2<T : Any>(typeArgs : Array<ObjectCreatorAsAny>) {
-    @BondFieldId(0) var valueT : T = cast(typeArgs[0].newInstanceAsAny())
+    @FieldId(0) var valueT : T = cast(typeArgs[0].newInstanceAsAny())
 }
 
 
 // Case 1: Generic class used as base class
-@BondGeneratedCode("gbc", "version.mock")
+@QBranchGeneratedCode("gbc", "version.mock")
 open class D1 : C2<C1<Int, String>>(arrayOf(mkCreator(C1::class, toKTypeArgsV(Int::class, String::class)))) {
 }
 

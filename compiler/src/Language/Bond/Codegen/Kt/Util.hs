@@ -26,17 +26,17 @@ import Language.Bond.Codegen.Util
 propertyAttributes :: MappingContext -> Field -> Text
 propertyAttributes kt Field {..} =
     schemaAttributes 2 fieldAttributes
- <> [lt|@BondFieldId(#{fieldOrdinal})#{typeAttribute}#{modifierAttribute fieldType fieldModifier}|]
+ <> [lt|@FieldId(#{fieldOrdinal})#{typeAttribute}#{modifierAttribute fieldType fieldModifier}|]
         where
             annotatedType = getAnnotatedTypeName kt fieldType
             propertyType = getTypeName kt fieldType
             typeAttribute = if annotatedType /= propertyType
                 then [lt| #{annotatedType}|]
                 else mempty
-            modifierAttribute BT_MetaName _ = [lt| @BondRequiredOptional|]
-            modifierAttribute BT_MetaFullName _ = [lt| @BondRequiredOptional|]
-            modifierAttribute _ Required = [lt| @BondRequired|]
-            modifierAttribute _ RequiredOptional = [lt| @BondRequiredOptional|]
+            modifierAttribute BT_MetaName _ = [lt| @RequiredOptional|]
+            modifierAttribute BT_MetaFullName _ = [lt| @RequiredOptional|]
+            modifierAttribute _ Required = [lt| @Required|]
+            modifierAttribute _ RequiredOptional = [lt| @RequiredOptional|]
             modifierAttribute _ _ = mempty
 
 -- Kotlin class/struct/interface attributes
@@ -50,7 +50,7 @@ typeAttributes _ _ = error "Kotlin:typeAttributes: impossible happened."
 
 generatedCodeAttr :: Text
 generatedCodeAttr = [lt|
-@BondGeneratedCode("gbc", "#{showVersion version}")|]
+@QBranchGeneratedCode("gbc", "#{showVersion version}")|]
 
 idl :: MappingContext
 idl = MappingContext idlTypeMapping [] [] []
@@ -64,7 +64,7 @@ schemaAttributes :: Int64 -> [Attribute] -> Text
 schemaAttributes indent = newlineSepEnd indent schemaAttribute
   where
     schemaAttribute Attribute {..} =
-        [lt| @BondAttribute("#{getQualifiedName idl attrName}", "#{attrValue}")|]
+        [lt| @Attribute("#{getQualifiedName idl attrName}", "#{attrValue}")|]
 
 -- Initial value for Kotlin property or Nothing
 defaultValue :: MappingContext -> Field -> Maybe Text

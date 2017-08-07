@@ -7,7 +7,7 @@ import bond.BondDataType
 import java.lang.reflect.Field
 import java.nio.charset.Charset
 import java.util.*
-import net.dummydigit.qbranch.annotations.BondFieldId
+import net.dummydigit.qbranch.annotations.FieldId
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.protocols.TaggedProtocolReader
 import net.dummydigit.qbranch.types.isBondGeneratedStruct
@@ -73,7 +73,7 @@ internal class StructDeserializer(inputCls : Class<*>, stringCharset : Charset) 
         // For each field, create its deserializer
         inputCls.declaredFields.forEach {
             val field = it
-            val fieldId = it.getDeclaredAnnotation(BondFieldId::class.java).id
+            val fieldId = it.getDeclaredAnnotation(FieldId::class.java).id
             field.isAccessible = true
             val bondTag = BondJavaTypeMapping.builtInTypeToBondTag[field.genericType]
             if (bondTag != null) {

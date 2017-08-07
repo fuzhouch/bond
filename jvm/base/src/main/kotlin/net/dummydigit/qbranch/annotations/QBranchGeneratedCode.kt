@@ -10,6 +10,6 @@ package net.dummydigit.qbranch.annotations
  * @param version Build version of compiler of Bond IDL.
  */
 @Target(AnnotationTarget.CLASS)
-annotation class BondGeneratedCode(
+annotation class QBranchGeneratedCode(
         val compilerName : String,
         val version : String)

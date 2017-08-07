@@ -8,4 +8,4 @@ package net.dummydigit.qbranch.annotations
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
-annotation class BondFieldId(val id : Int)
+annotation class FieldId(val id : Int)

@@ -18,32 +18,32 @@ import net.dummydigit.qbranch.types.*
 
 
 
-@BondGeneratedCode("gbc", "0.8.0.0")
+@QBranchGeneratedCode("gbc", "0.8.0.0")
 open class PrimitiveStruct
 {
-    @BondFieldId(1) var int8value : Byte = 0
+    @FieldId(1) var int8value : Byte = 0
 
-    @BondFieldId(3) var int16value : Short = 0
+    @FieldId(3) var int16value : Short = 0
 
-    @BondFieldId(5) var int32value : Int = 0
+    @FieldId(5) var int32value : Int = 0
 
-    @BondFieldId(7) var int64value : Long = 0L
+    @FieldId(7) var int64value : Long = 0L
 
-    @BondFieldId(9) var uint8value : UnsignedByte = UnsignedByte()
+    @FieldId(9) var uint8value : UnsignedByte = UnsignedByte()
 
-    @BondFieldId(11) var uint16value : UnsignedShort = UnsignedShort()
+    @FieldId(11) var uint16value : UnsignedShort = UnsignedShort()
 
-    @BondFieldId(13) var uint32value : UnsignedInt = UnsignedInt()
+    @FieldId(13) var uint32value : UnsignedInt = UnsignedInt()
 
-    @BondFieldId(15) var uint64value : UnsignedLong = UnsignedLong()
+    @FieldId(15) var uint64value : UnsignedLong = UnsignedLong()
 
-    @BondFieldId(17) var stringvalue : ByteString = ByteString("")
+    @FieldId(17) var stringvalue : ByteString = ByteString("")
 
-    @BondFieldId(19) var wstringvalue : String = ""
+    @FieldId(19) var wstringvalue : String = ""
 
-    @BondFieldId(21) var floatvalue : Float = 0.0f
+    @FieldId(21) var floatvalue : Float = 0.0f
 
-    @BondFieldId(23) var doublevalue : Double = 0.0
+    @FieldId(23) var doublevalue : Double = 0.0
 }
 
 // End of package net.dummydigit.qbranch.ut

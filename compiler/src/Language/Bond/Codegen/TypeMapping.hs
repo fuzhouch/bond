@@ -512,7 +512,7 @@ ktType (BT_Nullable element) = typeName element <<> "?"
 
 -- Kotlin type annotation mapping
 ktTypeAnnotation :: (Type -> TypeNameBuilder) -> Type -> TypeNameBuilder
-ktTypeAnnotation _ (BT_Nullable _) = pure "@BondNullable"
+ktTypeAnnotation _ (BT_Nullable _) = pure "@Nullable"
 ktTypeAnnotation _ (BT_TypeParam _) = pure ""
 ktTypeAnnotation _ (BT_Vector _) = pure ""
 ktTypeAnnotation _ (BT_List _) = pure ""

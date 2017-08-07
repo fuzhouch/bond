@@ -9,5 +9,5 @@ package net.dummydigit.qbranch.annotations
  * @param attrName Vame of Bond attribute.
  * @param value Given string value of Bond attribute.
  */
-annotation class BondAttribute(val attrName : String, val value : String)
+annotation class Attribute(val attrName : String, val value : String)
 
