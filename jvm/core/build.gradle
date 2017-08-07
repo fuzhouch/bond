@@ -1,7 +1,7 @@
 archivesBaseName = 'qbranch-core'
 
 dependencies {
-    compile project(":basetype")
+    compile project(":base")
     compile project(":bondschema")
 }
 

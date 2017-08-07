@@ -1,4 +1,4 @@
-include 'basetype'
+include 'base'
 include 'bondschema'
 include 'core'
 
