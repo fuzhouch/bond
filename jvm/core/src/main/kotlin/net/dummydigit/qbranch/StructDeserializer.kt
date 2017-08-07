@@ -10,7 +10,7 @@ import java.util.*
 import net.dummydigit.qbranch.annotations.BondFieldId
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
 import net.dummydigit.qbranch.protocols.TaggedProtocolReader
-import net.dummydigit.qbranch.utils.isBondGeneratedStruct
+import net.dummydigit.qbranch.types.isBondGeneratedStruct
 
 /**
  * Implementation that return deserialized struct as Object.

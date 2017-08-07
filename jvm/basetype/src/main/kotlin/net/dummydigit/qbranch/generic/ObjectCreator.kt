@@ -8,8 +8,8 @@ package net.dummydigit.qbranch.generic
 import java.util.ArrayList
 import kotlin.reflect.KClass
 import net.dummydigit.qbranch.exceptions.UnsupportedBondTypeException
-import net.dummydigit.qbranch.utils.isGenericClass
-import net.dummydigit.qbranch.utils.isBondGeneratedStruct
+import net.dummydigit.qbranch.types.isGenericClass
+import net.dummydigit.qbranch.types.isBondGeneratedStruct
 
 private class UnknownClassObjectCreator(objectClass : Class<*>) : ObjectCreatorAsAny {
     val cls = objectClass

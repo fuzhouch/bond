@@ -4,6 +4,8 @@
 package net.dummydigit.qbranch.utils;
 
 import java.lang.reflect.Field;
+
+import net.dummydigit.qbranch.types.ReflectionExtensions;
 import net.dummydigit.qbranch.ut.mocks.StructWithGenericField;
 import net.dummydigit.qbranch.generic.ObjectCreator;
 import org.junit.Assert;
