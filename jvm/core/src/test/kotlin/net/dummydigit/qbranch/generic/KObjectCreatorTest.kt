@@ -33,7 +33,17 @@ class KObjectCreatorTest {
 
     @Test(expected = UnsupportedBondTypeException::class)
     fun testThrowExceptionWhenPassingNonGenericClassToGenericBuilderArray() {
-        mkCreator(AllPrimitiveTypes::class, toKTypeArgs(arrayOf(KObjectCreatorTest::class)))
+        // NOTE: arrayOf(Int::class) can cause compilation failure because
+        // type inference can infer the class to concrete class, Array<Class<KObjectCreatorTest>>,
+        // instead of expected Array<Class<*>>, which can cause compilation failure.
+        //
+        // For case of single class object, try using toKTypeArgsV(KObjectCreatorTest::class) instead.
+        mkCreator(AllPrimitiveTypes::class, toKTypeArgs(arrayOf(KObjectCreatorTest::class, Int::class)))
+    }
+
+    @Test(expected = UnsupportedBondTypeException::class)
+    fun testThrowExceptionWhenPassingNonGenericClassToGenericBuilderArraySingleArg() {
+        mkCreator(AllPrimitiveTypes::class, toKTypeArgsV(KObjectCreatorTest::class))
     }
 
     @Test
